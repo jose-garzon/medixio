@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CalendarPlus } from "lucide-react";
 
@@ -36,14 +35,8 @@ export default function DraftReminder({
                 </p>
               </div>
               <div className="flex items-center space-x-2">
-                {appointment.date ? (
-                  <p className="text-sm">{appointment.date}</p>
-                ) : (
-                  <Badge variant="outline">No date set</Badge>
-                )}
-                <Button size="sm">
-                  <CalendarPlus className="mr-2 h-4 w-4" />
-                  Schedule
+                <Button size="icon">
+                  <CalendarPlus />
                 </Button>
               </div>
             </div>

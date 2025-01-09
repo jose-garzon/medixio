@@ -1,10 +1,35 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CalendarIcon, ClockIcon, AlertCircleIcon } from "lucide-react";
+import {
+  CalendarIcon,
+  ClockIcon,
+  AlertCircleIcon,
+  TriangleAlertIcon,
+} from "lucide-react";
 
 interface StatsProps {
   totalAppointments: number;
   upcomingAppointments: number;
   missedAppointments: number;
+}
+
+interface StatCardProps {
+  title: string;
+  icon: React.ElementType;
+  value: number;
+}
+
+function StatCard({ title, icon: Icon, value }: StatCardProps) {
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+      </CardHeader>
+      <CardContent className="flex items-center gap-4">
+        <Icon className="h-5 w-5 text-muted-foreground" />
+        <div className="text-2xl font-bold">{value}</div>
+      </CardContent>
+    </Card>
+  );
 }
 
 export default function Stats({
@@ -13,40 +38,23 @@ export default function Stats({
   missedAppointments,
 }: StatsProps) {
   return (
-    <div className="space-y-4">
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">
-            Total Appointments
-          </CardTitle>
-          <CalendarIcon className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{totalAppointments}</div>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">
-            Upcoming Appointments
-          </CardTitle>
-          <ClockIcon className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{upcomingAppointments}</div>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">
-            Missed Appointments
-          </CardTitle>
-          <AlertCircleIcon className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{missedAppointments}</div>
-        </CardContent>
-      </Card>
+    <div className="grid grid-cols-2 gap-3">
+      <StatCard title="Total" icon={CalendarIcon} value={totalAppointments} />
+      <StatCard
+        title="Siguientes"
+        icon={ClockIcon}
+        value={upcomingAppointments}
+      />
+      <StatCard
+        title="Perdidas"
+        icon={AlertCircleIcon}
+        value={missedAppointments}
+      />
+      <StatCard
+        title="por agendar"
+        icon={TriangleAlertIcon}
+        value={missedAppointments}
+      />
     </div>
   );
 }

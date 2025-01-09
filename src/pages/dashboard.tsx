@@ -30,17 +30,15 @@ export const Dashboard: React.FC = () => {
     <div className="flex flex-col lg:flex-row lg:space-x-6">
       <div className="flex-grow lg:max-w-[calc(100%-320px)]">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-3xl font-bold tracking-tight">
-            Medixio Dashboard
-          </h2>
+          <h2 className="text-3xl font-bold tracking-tight">Citas medicas</h2>
           <Button>
-            <PlusCircle className="mr-2 h-4 w-4" /> New Appointment
+            <PlusCircle className="mr-2 h-4 w-4" /> Nueva cita
           </Button>
         </div>
         <Tabs defaultValue="active" className="w-full">
           <TabsList>
-            <TabsTrigger value="active">Active</TabsTrigger>
-            <TabsTrigger value="past">Past</TabsTrigger>
+            <TabsTrigger value="active">Activas</TabsTrigger>
+            <TabsTrigger value="past">Pasadas</TabsTrigger>
           </TabsList>
           <TabsContent value="active">
             <AppointmentList type="active" />
