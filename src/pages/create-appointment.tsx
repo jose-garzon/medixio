@@ -13,6 +13,7 @@ import { DatePickerField } from "@/components/forms/datepicker-field";
 import { SwitchField } from "@/components/forms/switch-field";
 import { useForm } from "react-hook-form";
 import { TimeField } from "@/components/forms/time-field";
+import { TextAreaField } from "@/components/forms/textarea.field";
 
 const onSubmit = (data: unknown) => {
   console.log(data);
@@ -26,15 +27,18 @@ export const CreateAppointment: React.FC = () => {
       date: new Date(),
       time: "",
       isActive: false,
+      addess: "",
+      phoneNumber: "",
+      notes: "",
     },
   });
   return (
     <div className="flex justify-center">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Create New Appointment</CardTitle>
+          <CardTitle>Crear nueva cita</CardTitle>
           <CardDescription>
-            Fill in the details for your new appointment
+            Rellena los detalles de tu nueva cita
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -52,13 +56,24 @@ export const CreateAppointment: React.FC = () => {
                 label="Especialidad"
                 placeholder="Ingresa su especialidad"
               />
+              <InputField
+                control={form.control}
+                name="addess"
+                label="Dirección"
+                placeholder="Ingresa la dirección de la clínica"
+              />
+              <InputField
+                control={form.control}
+                name="phoneNumber"
+                label="Número de Whatsapp"
+                placeholder="Ingresa su número de Whatsapp"
+              />
 
               <DatePickerField
                 control={form.control}
                 name="date"
                 label="Fecha"
               />
-
               <TimeField control={form.control} label="Hora" name="time" />
 
               <SwitchField
@@ -66,6 +81,12 @@ export const CreateAppointment: React.FC = () => {
                 name="isActive"
                 label="Cita agendada"
                 description="Selecciona si ya agendaste la cita."
+              />
+
+              <TextAreaField
+                control={form.control}
+                name="notes"
+                label="Notas"
               />
 
               <Button type="submit" className="w-full">

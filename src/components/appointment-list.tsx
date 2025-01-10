@@ -62,7 +62,7 @@ export default function AppointmentList({ type }: AppointmentListProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {appointments.map((appointment) => (
-        <Card key={appointment.id}>
+        <Card key={appointment.id} className="justify-between">
           <CardHeader>
             <CardTitle>{appointment.doctorName}</CardTitle>
             <CardDescription>{appointment.specialty}</CardDescription>
@@ -79,9 +79,11 @@ export default function AppointmentList({ type }: AppointmentListProps) {
               {appointment.status}
             </Badge>
           </CardContent>
-          <CardFooter className="flex justify-between">
-            <Button variant="outline">View Details</Button>
-            <Button>
+          <CardFooter className="flex lg:flex-col xl:flex-row justify-end gap-4">
+            <Button variant="outline" className="lg:w-full">
+              Detalles
+            </Button>
+            <Button className="lg:w-full">
               <WhatsappIcon className="mr-2 h-4 w-4" /> WhatsApp
             </Button>
           </CardFooter>
