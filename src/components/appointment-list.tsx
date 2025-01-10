@@ -6,12 +6,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PhoneIcon as WhatsappIcon } from "lucide-react";
 import { AppointmentDrawer } from "./appointment-drawer";
 import { useState } from "react";
 import { Appointment } from "@/services/appointments/types";
+import { StatusBadge } from "./status-badge";
+import { formatDate } from "@/lib/dates";
 
 interface AppointmentListProps {
   type: "active" | "past";
@@ -81,16 +82,9 @@ export default function AppointmentList({ type }: AppointmentListProps) {
               <CardDescription>{appointment.specialty}</CardDescription>
             </CardHeader>
             <CardContent>
-              <p>Date: {appointment.date}</p>
-              <p>Time: {appointment.time}</p>
-              <Badge
-                className="mt-2"
-                variant={
-                  appointment.status === "Active" ? "default" : "secondary"
-                }
-              >
-                {appointment.status}
-              </Badge>
+              <p>Fecha: {formatDate(new Date(appointment.date))}</p>
+              <p>Hora: {appointment.time}</p>
+              <StatusBadge status={appointment.status} />
             </CardContent>
             <CardFooter className="flex lg:flex-col xl:flex-row justify-end gap-4">
               <Button

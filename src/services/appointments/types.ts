@@ -4,7 +4,7 @@ export interface Appointment {
   id: string;
   doctorName: string;
   specialty: string;
-  date: Date;
+  date: string;
   time: string;
   status: AppointmentStatus;
   address: string;

@@ -8,9 +8,9 @@ import {
   DrawerFooter,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { CalendarIcon, ClockIcon, FileTextIcon, MapPin } from "lucide-react";
 import { Appointment } from "@/services/appointments/types";
+import { StatusBadge } from "./status-badge";
 
 interface AppointmentDrawerProps {
   appointment: Appointment | null;
@@ -37,14 +37,7 @@ export function AppointmentDrawer({
               </DrawerTitle>
               <DrawerDescription>{appointment.specialty}</DrawerDescription>
             </div>
-            <Badge
-              variant={
-                appointment.status === "Active" ? "default" : "secondary"
-              }
-              className="px-3 py-1"
-            >
-              {appointment.status}
-            </Badge>
+            <StatusBadge status={appointment.status} />
           </DrawerHeader>
           <div className="p-4 pb-0 space-y-4">
             <div className="flex  justify-between">

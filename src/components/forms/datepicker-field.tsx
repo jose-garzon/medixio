@@ -15,9 +15,9 @@ import {
   FormMessage,
 } from "../ui/form";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
 import { Control, FieldValues, Path } from "react-hook-form";
 import { CalendarIcon } from "lucide-react";
+import { formatDate } from "@/lib/dates";
 
 interface DatePickerFieldProps<T extends FieldValues> {
   control: Control<T>;
@@ -57,7 +57,7 @@ export const DatePickerField = <T extends FieldValues>({
                 )}
               >
                 {field.value ? (
-                  format(field.value, "PPP")
+                  formatDate(field.value)
                 ) : (
                   <span>Pick a date</span>
                 )}
