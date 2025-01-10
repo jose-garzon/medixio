@@ -9,17 +9,9 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PhoneIcon as WhatsappIcon } from "lucide-react";
-
-type AppointmentStatus = "Draft" | "Active" | "Outdated" | "Done";
-
-interface Appointment {
-  id: string;
-  doctorName: string;
-  specialty: string;
-  date: string;
-  time: string;
-  status: AppointmentStatus;
-}
+import { AppointmentDrawer } from "./appointment-drawer";
+import { useState } from "react";
+import { Appointment } from "@/services/appointments/types";
 
 interface AppointmentListProps {
   type: "active" | "past";
@@ -33,6 +25,9 @@ const mockAppointments: Appointment[] = [
     date: "2023-06-15",
     time: "10:00 AM",
     status: "Active",
+    address: "Clinica san diego",
+    phoneNumber: "+57 3004486873",
+    notes: "Llevar examenes",
   },
   {
     id: "2",
@@ -41,6 +36,9 @@ const mockAppointments: Appointment[] = [
     date: "2023-06-20",
     time: "2:00 PM",
     status: "Draft",
+    address: "Clinica san diego",
+    phoneNumber: "+57 3004486873",
+    notes: "Llevar examenes",
   },
   {
     id: "3",
@@ -49,10 +47,24 @@ const mockAppointments: Appointment[] = [
     date: "2023-05-10",
     time: "11:30 AM",
     status: "Done",
+    address: "Clinica san diego",
+    phoneNumber: "+57 3004486873",
+    notes: "Llevar examenes",
   },
 ];
 
 export default function AppointmentList({ type }: AppointmentListProps) {
+  const [selectedAppointment, setSelectedAppointment] =
+    useState<Appointment | null>(null);
+
+  const openDrawer = (appointment: Appointment) => {
+    setSelectedAppointment(appointment);
+  };
+
+  const closeDrawer = () => {
+    setSelectedAppointment(null);
+  };
+
   const appointments = mockAppointments.filter((appointment) =>
     type === "active"
       ? ["Active", "Draft"].includes(appointment.status)
@@ -60,35 +72,45 @@ export default function AppointmentList({ type }: AppointmentListProps) {
   );
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {appointments.map((appointment) => (
-        <Card key={appointment.id} className="justify-between">
-          <CardHeader>
-            <CardTitle>{appointment.doctorName}</CardTitle>
-            <CardDescription>{appointment.specialty}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p>Date: {appointment.date}</p>
-            <p>Time: {appointment.time}</p>
-            <Badge
-              className="mt-2"
-              variant={
-                appointment.status === "Active" ? "default" : "secondary"
-              }
-            >
-              {appointment.status}
-            </Badge>
-          </CardContent>
-          <CardFooter className="flex lg:flex-col xl:flex-row justify-end gap-4">
-            <Button variant="outline" className="lg:w-full">
-              Detalles
-            </Button>
-            <Button className="lg:w-full">
-              <WhatsappIcon className="mr-2 h-4 w-4" /> WhatsApp
-            </Button>
-          </CardFooter>
-        </Card>
-      ))}
-    </div>
+    <>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {appointments.map((appointment) => (
+          <Card key={appointment.id} className="justify-between">
+            <CardHeader>
+              <CardTitle>{appointment.doctorName}</CardTitle>
+              <CardDescription>{appointment.specialty}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p>Date: {appointment.date}</p>
+              <p>Time: {appointment.time}</p>
+              <Badge
+                className="mt-2"
+                variant={
+                  appointment.status === "Active" ? "default" : "secondary"
+                }
+              >
+                {appointment.status}
+              </Badge>
+            </CardContent>
+            <CardFooter className="flex lg:flex-col xl:flex-row justify-end gap-4">
+              <Button
+                variant="outline"
+                className="lg:w-full"
+                onClick={() => openDrawer(appointment)}
+              >
+                Detalles
+              </Button>
+              <Button className="lg:w-full">
+                <WhatsappIcon className="mr-2 h-4 w-4" /> WhatsApp
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+      <AppointmentDrawer
+        appointment={selectedAppointment}
+        onClose={closeDrawer}
+      />
+    </>
   );
 }
