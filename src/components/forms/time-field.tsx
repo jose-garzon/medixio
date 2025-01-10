@@ -14,6 +14,7 @@ interface TimeFieldProps<T extends FieldValues> {
   name: Path<T>;
   label: string;
   description?: string;
+  className?: string;
 }
 
 export const TimeField = <T extends FieldValues>({
@@ -21,6 +22,7 @@ export const TimeField = <T extends FieldValues>({
   name,
   label,
   description,
+  className,
 }: TimeFieldProps<T>) => {
   // Generate hours in 12-hour format (1-12)
   const hours = Array.from({ length: 12 }, (_, i) => ({
@@ -41,7 +43,6 @@ export const TimeField = <T extends FieldValues>({
   ];
 
   const convertTo24Hour = (hour: string, minute: string, period: string) => {
-    console.log({ hour, minute, period });
     let h = parseInt(hour);
     if (period === "PM" && h !== 12) h += 12;
     if (period === "AM" && h === 12) h = 0;
@@ -76,7 +77,7 @@ export const TimeField = <T extends FieldValues>({
         const { hour, minute, period } = convertTo12Hour(field.value);
 
         return (
-          <FormItem className="flex flex-col">
+          <FormItem className={className}>
             <FormLabel>{label}</FormLabel>
             <div className="flex gap-2 items-center">
               {/* Hours Combobox */}

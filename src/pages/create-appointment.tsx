@@ -14,13 +14,14 @@ import { SwitchField } from "@/components/forms/switch-field";
 import { useForm } from "react-hook-form";
 import { TimeField } from "@/components/forms/time-field";
 import { TextAreaField } from "@/components/forms/textarea.field";
+import { CreateAppointmentFormSchema } from "@/services/appointments/types";
 
 const onSubmit = (data: unknown) => {
   console.log(data);
 };
 
 export const CreateAppointment: React.FC = () => {
-  const form = useForm({
+  const form = useForm<CreateAppointmentFormSchema>({
     defaultValues: {
       doctorName: "",
       specialty: "",
@@ -34,7 +35,7 @@ export const CreateAppointment: React.FC = () => {
   });
   return (
     <div className="flex justify-center">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-lg">
         <CardHeader>
           <CardTitle>Crear nueva cita</CardTitle>
           <CardDescription>
@@ -43,30 +44,28 @@ export const CreateAppointment: React.FC = () => {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="grid space-6 gap-6 grid-cols-1 md:grid-cols-2"
+            >
               <InputField
+                className="md:col-span-2"
                 control={form.control}
                 name="doctorName"
                 label="Nombre del doctor"
-                placeholder="Ingresa el nombre de tu doctor"
+                placeholder="Nombre de tu doctor"
               />
               <InputField
                 control={form.control}
                 name="specialty"
                 label="Especialidad"
-                placeholder="Ingresa su especialidad"
+                placeholder="Especialidad del doctor"
               />
               <InputField
                 control={form.control}
                 name="addess"
                 label="Dirección"
-                placeholder="Ingresa la dirección de la clínica"
-              />
-              <InputField
-                control={form.control}
-                name="phoneNumber"
-                label="Número de Whatsapp"
-                placeholder="Ingresa su número de Whatsapp"
+                placeholder="Dirección de la clínica"
               />
 
               <DatePickerField
@@ -75,7 +74,12 @@ export const CreateAppointment: React.FC = () => {
                 label="Fecha"
               />
               <TimeField control={form.control} label="Hora" name="time" />
-
+              <InputField
+                control={form.control}
+                name="phoneNumber"
+                label="Número de Whatsapp"
+                placeholder="Ingresa su número de Whatsapp"
+              />
               <SwitchField
                 control={form.control}
                 name="isActive"
@@ -84,12 +88,13 @@ export const CreateAppointment: React.FC = () => {
               />
 
               <TextAreaField
+                className="md:col-span-2"
                 control={form.control}
                 name="notes"
                 label="Notas"
               />
 
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full md:col-span-2">
                 Crear cita
               </Button>
             </form>

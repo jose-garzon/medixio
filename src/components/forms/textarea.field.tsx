@@ -33,15 +33,10 @@ export const TextAreaField = <T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className={className}>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <Textarea
-              placeholder={placeholder}
-              className={className}
-              rows={rows}
-              {...field}
-            />
+            <Textarea placeholder={placeholder} rows={rows} {...field} />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />

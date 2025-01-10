@@ -14,6 +14,7 @@ interface InputFieldProps<T extends FieldValues> {
   name: Path<T>;
   label: string;
   placeholder: string;
+  className?: string;
   description?: string;
 }
 
@@ -23,12 +24,13 @@ export const InputField = <T extends FieldValues>({
   label,
   placeholder,
   description,
+  className,
 }: InputFieldProps<T>) => (
   <FormField
     control={control}
     name={name}
     render={({ field }) => (
-      <FormItem>
+      <FormItem className={className}>
         <FormLabel>{label}</FormLabel>
         <FormControl>
           <Input placeholder={placeholder} {...field} />

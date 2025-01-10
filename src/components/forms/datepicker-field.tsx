@@ -27,6 +27,7 @@ interface DatePickerFieldProps<T extends FieldValues> {
   mode?: CalendarProps["mode"];
   initialFocus?: CalendarProps["initialFocus"];
   disabled?: CalendarProps["disabled"];
+  className?: string;
 }
 
 export const DatePickerField = <T extends FieldValues>({
@@ -37,12 +38,13 @@ export const DatePickerField = <T extends FieldValues>({
   mode = "single",
   initialFocus = true,
   disabled,
+  className,
 }: DatePickerFieldProps<T>) => (
   <FormField
     control={control}
     name={name}
     render={({ field }) => (
-      <FormItem className="flex flex-col">
+      <FormItem className={className}>
         <FormLabel>{label}</FormLabel>
         <Popover>
           <PopoverTrigger asChild>
