@@ -26,7 +26,7 @@ const dashboardData = {
   ],
 };
 
-export const Dashboard: React.FC = () => {
+export function Dashboard() {
   return (
     <div className="flex flex-col lg:flex-row lg:space-x-6">
       <div className="flex-grow lg:max-w-[calc(100%-320px)]">
@@ -63,4 +63,4 @@ export const Dashboard: React.FC = () => {
       </div>
     </div>
   );
-};
+}

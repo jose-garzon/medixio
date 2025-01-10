@@ -20,7 +20,7 @@ const onSubmit = (data: unknown) => {
   console.log(data);
 };
 
-export const CreateAppointment: React.FC = () => {
+export function CreateAppointment() {
   const form = useForm<CreateAppointmentFormSchema>({
     defaultValues: {
       doctorName: "",
@@ -103,4 +103,4 @@ export const CreateAppointment: React.FC = () => {
       </Card>
     </div>
   );
-};
+}
