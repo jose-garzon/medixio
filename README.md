@@ -1,50 +1,73 @@
-# React + TypeScript + Vite
+# Medixio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Medixio is a web application designed to help people with complex illnesses efficiently manage their medical appointments. It provides a user-friendly and accessible interface to organize appointments, store medical contact information, and track the status of each appointment.
 
-Currently, two official plugins are available:
+## Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- View active and past appointments.
 
-## Expanding the ESLint configuration
+- Create and edit medical appointments with detailed fields such as doctor's name, specialty, date and time, contact, and additional notes.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Manage appointment statuses: "draft," "active," "outdated," and "done."
 
-- Configure the top-level `parserOptions` property like this:
+- Integration with WhatsApp for scheduling or confirming appointments.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- Adaptable theme with light and dark modes.
+
+## Technologies Used
+
+- React 18 for component creation.
+
+- Wouter for routing.
+
+- Shadcn and TailwindCSS for a modern and accessible design.
+
+## Installation and Setup
+
+Follow these steps to run the project locally:
+
+1. Clone the repository
+
+```
+git clone https://github.com/your-username/medixio.git
+cd medixio
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+2. Install dependencies
+   Make sure you have Node.js and bun installed. Then run:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
 ```
+bun install
+```
+
+3. Start the development server
+
+```
+bun run dev
+```
+
+4. The project will be available at `http://localhost:3000`.
+
+Build for production (optional)
+To generate an optimized production build:
+
+```
+npm run build
+npm start
+```
+
+## Deployment
+
+You can access the deployed project at the following link:
+
+Medixio Deployment Link
+
+(Update this link with the project's URL once deployed)
+
+## Contribution
+
+If you want to contribute to the project, please open an issue or a pull request in the repository.
+
+## License
+
+This project is licensed under the MIT License. You can find more details in the `LICENSE` file in the repository.
