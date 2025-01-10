@@ -19,7 +19,7 @@ export default function DraftReminder({
   return (
     <Card className="mt-4">
       <CardHeader>
-        <CardTitle>Draft Appointments</CardTitle>
+        <CardTitle>Citas por agendar</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
