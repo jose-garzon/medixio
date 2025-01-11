@@ -30,24 +30,26 @@ export function Dashboard() {
   return (
     <div className="flex flex-col lg:flex-row lg:space-x-6">
       <div className="flex-grow lg:max-w-[calc(100%-320px)]">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between  gap-4 items-center mb-6">
           <h2 className="text-3xl font-bold tracking-tight">Citas medicas</h2>
-          <div className="flex items-center space-x-4">
+          <Link to="/citas/nueva">
+            <Button size="sm">
+              <PlusCircle className="mr-2 h-2 w-2" /> Nueva cita
+            </Button>
+          </Link>
+        </div>
+        <Tabs defaultValue="active" className="w-full">
+          <div className="flex justify-between items-center mb-4">
+            <TabsList>
+              <TabsTrigger value="active">Activas</TabsTrigger>
+              <TabsTrigger value="past">Pasadas</TabsTrigger>
+            </TabsList>
             <Link to="/citas">
-              <Button variant="outline">Ver citas</Button>
-            </Link>
-            <Link to="/citas/nueva">
-              <Button>
-                <PlusCircle className="mr-2 h-4 w-4" /> Nueva cita
+              <Button variant="ghost" size="sm">
+                Ver todas las citas
               </Button>
             </Link>
           </div>
-        </div>
-        <Tabs defaultValue="active" className="w-full">
-          <TabsList>
-            <TabsTrigger value="active">Activas</TabsTrigger>
-            <TabsTrigger value="past">Pasadas</TabsTrigger>
-          </TabsList>
           <TabsContent value="active">
             <AppointmentList type="active" />
           </TabsContent>

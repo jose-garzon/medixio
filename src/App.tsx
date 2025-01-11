@@ -6,7 +6,7 @@ import { AppointmentsTable } from "./components/appointment-table";
 function App() {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="px-12 bg-primary text-primary-foreground py-4 flex items-center">
+      <header className="px-4 md:px-12 bg-primary text-primary-foreground py-4 flex items-center">
         <img src="/logo-dark.svg" alt="Medixio" className="h-12" />
         <Link to="/" className="container px-4">
           <h1 className="text-2xl font-bold">Medixio</h1>

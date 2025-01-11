@@ -42,6 +42,17 @@ const mockAppointments: Appointment[] = [
     notes: "Llevar examenes",
   },
   {
+    id: "4",
+    doctorName: "Dr. Saibi",
+    specialty: "Reumatologo",
+    date: "2023-06-20",
+    time: "2:00 PM",
+    status: "Active",
+    address: "Clinica Foscal",
+    phoneNumber: "+57 3004486873",
+    notes: "Llevar examenes",
+  },
+  {
     id: "3",
     doctorName: "Dr. Mike Johnson",
     specialty: "Oncologist",
@@ -82,8 +93,12 @@ export default function AppointmentList({ type }: AppointmentListProps) {
               <CardDescription>{appointment.specialty}</CardDescription>
             </CardHeader>
             <CardContent>
-              <p>Fecha: {formatDate(new Date(appointment.date))}</p>
-              <p>Hora: {appointment.time}</p>
+              <p>
+                <strong>Fecha:</strong> {formatDate(new Date(appointment.date))}
+              </p>
+              <p>
+                <strong>Hora:</strong> {appointment.time}
+              </p>
               <StatusBadge status={appointment.status} />
             </CardContent>
             <CardFooter className="flex lg:flex-col xl:flex-row justify-end gap-4">
