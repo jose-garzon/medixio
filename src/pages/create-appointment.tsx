@@ -78,7 +78,8 @@ export function CreateAppointment() {
                 control={form.control}
                 name="phoneNumber"
                 label="Número de Whatsapp"
-                placeholder="Ingresa su número de Whatsapp"
+                placeholder="Número para agendar citas"
+                description="Agrega el codigo de pais +57"
               />
               <SwitchField
                 control={form.control}
