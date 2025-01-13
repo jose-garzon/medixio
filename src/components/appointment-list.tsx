@@ -15,57 +15,11 @@ import { StatusBadge } from "./status-badge";
 import { formatDate } from "@/lib/dates";
 import { NoAppointments } from "./no-appointments";
 import { DaysToDate } from "./DaysToDate";
+import { getAppointments } from "@/services/db/store";
 
 interface AppointmentListProps {
   type: "active" | "past";
 }
-
-const mockAppointments: Appointment[] = [
-  {
-    id: "1",
-    doctorName: "Dr. John Doe",
-    specialty: "Cardiologist",
-    date: "2025-06-15",
-    time: "10:00 AM",
-    status: "Active",
-    address: "Clinica san diego",
-    phoneNumber: "+57 3004486873",
-    notes: "Llevar examenes",
-  },
-  {
-    id: "2",
-    doctorName: "Dr. Jane Smith",
-    specialty: "Neurologist",
-    date: "2025-02-20",
-    time: "2:00 PM",
-    status: "Draft",
-    address: "Clinica san diego",
-    phoneNumber: "+57 3004486873",
-    notes: "Llevar examenes",
-  },
-  {
-    id: "4",
-    doctorName: "Dr. Saibi",
-    specialty: "Reumatologo",
-    date: "2025-01-20",
-    time: "2:00 PM",
-    status: "Active",
-    address: "Clinica Foscal",
-    phoneNumber: "+57 3004486873",
-    notes: "Llevar examenes",
-  },
-  {
-    id: "3",
-    doctorName: "Dr. Mike Johnson",
-    specialty: "Oncologist",
-    date: "2025-05-10",
-    time: "11:30 AM",
-    status: "Done",
-    address: "Clinica san diego",
-    phoneNumber: "+57 3004486873",
-    notes: "Llevar examenes",
-  },
-];
 
 export default function AppointmentList({ type }: AppointmentListProps) {
   const [selectedAppointment, setSelectedAppointment] =
@@ -79,11 +33,7 @@ export default function AppointmentList({ type }: AppointmentListProps) {
     setSelectedAppointment(null);
   };
 
-  const appointments = mockAppointments.filter((appointment) =>
-    type === "active"
-      ? ["Active", "Draft"].includes(appointment.status)
-      : ["Done", "Outdated"].includes(appointment.status)
-  );
+  const appointments = getAppointments(type);
 
   return (
     <>
