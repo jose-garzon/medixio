@@ -1,4 +1,3 @@
-import { format, differenceInDays } from "date-fns";
 import {
   Drawer,
   DrawerContent,
@@ -11,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { CalendarIcon, ClockIcon, FileTextIcon, MapPin } from "lucide-react";
 import { Appointment } from "@/services/appointments/types";
 import { StatusBadge } from "./status-badge";
+import { formatDate } from "@/lib/dates";
+import { DaysToDate } from "./DaysToDate";
 
 interface AppointmentDrawerProps {
   appointment: Appointment | null;
@@ -24,8 +25,6 @@ export function AppointmentDrawer({
   if (!appointment) return null;
 
   const appointmentDate = new Date(appointment.date);
-  const daysLeft = differenceInDays(appointmentDate, new Date());
-
   return (
     <Drawer open={Boolean(appointment)} onClose={onClose}>
       <DrawerContent>
@@ -45,7 +44,7 @@ export function AppointmentDrawer({
                 <div className="flex items-center space-x-2 text-lg">
                   <CalendarIcon className="text-primary" />
                   <span className="font-medium">
-                    {format(appointmentDate, "MMMM d, yyyy")}
+                    {formatDate(appointmentDate)}
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -53,9 +52,7 @@ export function AppointmentDrawer({
                   <span>{appointment.time}</span>
                 </div>
               </div>
-              <span className="text-lg font-semibold">
-                {daysLeft > 0 ? `En ${daysLeft} days` : "Hoy"}
-              </span>
+              <DaysToDate appointmentDate={appointmentDate} />
             </div>
             <div className="flex items-center space-x-2">
               <MapPin className="text-primary" />

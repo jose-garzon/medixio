@@ -14,6 +14,7 @@ import { Appointment } from "@/services/appointments/types";
 import { StatusBadge } from "./status-badge";
 import { formatDate } from "@/lib/dates";
 import { NoAppointments } from "./no-appointments";
+import { DaysToDate } from "./DaysToDate";
 
 interface AppointmentListProps {
   type: "active" | "past";
@@ -24,7 +25,7 @@ const mockAppointments: Appointment[] = [
     id: "1",
     doctorName: "Dr. John Doe",
     specialty: "Cardiologist",
-    date: "2023-06-15",
+    date: "2025-06-15",
     time: "10:00 AM",
     status: "Active",
     address: "Clinica san diego",
@@ -35,7 +36,7 @@ const mockAppointments: Appointment[] = [
     id: "2",
     doctorName: "Dr. Jane Smith",
     specialty: "Neurologist",
-    date: "2023-06-20",
+    date: "2025-02-20",
     time: "2:00 PM",
     status: "Draft",
     address: "Clinica san diego",
@@ -46,7 +47,7 @@ const mockAppointments: Appointment[] = [
     id: "4",
     doctorName: "Dr. Saibi",
     specialty: "Reumatologo",
-    date: "2023-06-20",
+    date: "2025-01-20",
     time: "2:00 PM",
     status: "Active",
     address: "Clinica Foscal",
@@ -57,7 +58,7 @@ const mockAppointments: Appointment[] = [
     id: "3",
     doctorName: "Dr. Mike Johnson",
     specialty: "Oncologist",
-    date: "2023-05-10",
+    date: "2025-05-10",
     time: "11:30 AM",
     status: "Done",
     address: "Clinica san diego",
@@ -93,18 +94,25 @@ export default function AppointmentList({ type }: AppointmentListProps) {
           appointments.map((appointment) => (
             <Card key={appointment.id} className="justify-between">
               <CardHeader>
-                <CardTitle>{appointment.doctorName}</CardTitle>
-                <CardDescription>{appointment.specialty}</CardDescription>
+                <div className="flex flex-wrap justify-between items-start gap-2">
+                  <div>
+                    <CardTitle>{appointment.doctorName}</CardTitle>
+                    <CardDescription>{appointment.specialty}</CardDescription>
+                  </div>
+                  <StatusBadge status={appointment.status} />
+                </div>
               </CardHeader>
-              <CardContent>
-                <p>
-                  <strong>Fecha:</strong>{" "}
-                  {formatDate(new Date(appointment.date))}
-                </p>
-                <p>
-                  <strong>Hora:</strong> {appointment.time}
-                </p>
-                <StatusBadge status={appointment.status} />
+              <CardContent className="flex justify-between items-start">
+                <div>
+                  <p>
+                    <strong>Fecha: </strong>
+                    {formatDate(new Date(appointment.date))}
+                  </p>
+                  <p>
+                    <strong>Hora:</strong> {appointment.time}
+                  </p>
+                </div>
+                <DaysToDate appointmentDate={new Date(appointment.date)} />
               </CardContent>
               <CardFooter className="flex lg:flex-col xl:flex-row justify-end gap-4">
                 <Button

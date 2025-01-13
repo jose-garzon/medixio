@@ -19,7 +19,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
     Done: "outline",
   };
   return (
-    <Badge className="mt-2" variant={variantMap[status] ?? variantMap.Draft}>
+    <Badge variant={variantMap[status] ?? variantMap.Draft}>
       {labelMap[status] ?? labelMap.Draft}
     </Badge>
   );
