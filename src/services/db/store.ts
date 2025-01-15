@@ -48,12 +48,19 @@ const appointmentsStorage: Appointment[] = [
   },
 ];
 
-export function getAppointments(filter: "active" | "past") {
-  return appointmentsStorage.filter((appointment) =>
-    filter === "active"
-      ? ["Active", "Draft"].includes(appointment.status)
-      : ["Done", "Outdated"].includes(appointment.status)
-  );
+export async function getAppointments(
+  filter: "active" | "past"
+): Promise<Appointment[]> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const filteredAppointments = appointmentsStorage.filter((appointment) =>
+        filter === "active"
+          ? ["Active", "Draft"].includes(appointment.status)
+          : ["Done", "Outdated"].includes(appointment.status)
+      );
+      resolve(filteredAppointments);
+    }, 1000);
+  });
 }
 
 export function createAppointment(appointment: Omit<Appointment, "id">) {
