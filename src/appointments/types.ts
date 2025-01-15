@@ -22,3 +22,5 @@ export interface CreateAppointmentFormSchema {
   phoneNumber: string;
   notes: string;
 }
+
+export type CreateAppointmentVariables = Omit<Appointment, "id">;

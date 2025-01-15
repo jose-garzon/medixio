@@ -1,4 +1,7 @@
-import { Appointment } from "../../appointments/types";
+import {
+  Appointment,
+  CreateAppointmentVariables,
+} from "../../appointments/types";
 import { generateId } from "./manageIds";
 
 const appointmentsStorage: Appointment[] = [
@@ -63,9 +66,16 @@ export async function getAppointments(
   });
 }
 
-export function createAppointment(appointment: Omit<Appointment, "id">) {
+export function createAppointment(
+  appointment: CreateAppointmentVariables
+): Promise<Appointment> {
   const newAppointment: Appointment = { id: generateId(), ...appointment };
-  appointmentsStorage.push(newAppointment);
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      appointmentsStorage.push(newAppointment);
+      resolve(newAppointment);
+    }, 1000);
+  });
 }
 
 export function getAppointment(id: string) {

@@ -15,12 +15,11 @@ import { useForm } from "react-hook-form";
 import { TimeField } from "@/components/forms/time-field";
 import { TextAreaField } from "@/components/forms/textarea.field";
 import { CreateAppointmentFormSchema } from "@/appointments/types";
-
-const onSubmit = (data: unknown) => {
-  console.log(data);
-};
+import { useCreateNewAppointment } from "@/appointments/services/useCreateAppointment";
+import { useLocation } from "wouter";
 
 export function CreateAppointment() {
+  const [, navigate] = useLocation();
   const form = useForm<CreateAppointmentFormSchema>({
     defaultValues: {
       doctorName: "",
@@ -33,6 +32,28 @@ export function CreateAppointment() {
       notes: "",
     },
   });
+  const createNewAppointment = useCreateNewAppointment();
+
+  const onSubmit = (data: CreateAppointmentFormSchema) => {
+    createNewAppointment.mutate(
+      {
+        address: data.addess,
+        doctorName: data.doctorName,
+        notes: data.notes,
+        phoneNumber: data.phoneNumber,
+        specialty: data.specialty,
+        time: data.time,
+        date: data.date.toString(),
+        status: data.isActive ? "Active" : "Draft",
+      },
+      {
+        onSuccess: () => {
+          navigate("/");
+        },
+      }
+    );
+  };
+
   return (
     <div className="flex justify-center">
       <Card className="w-full max-w-lg">
