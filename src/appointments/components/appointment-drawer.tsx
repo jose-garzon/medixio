@@ -8,10 +8,10 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { CalendarIcon, ClockIcon, FileTextIcon, MapPin } from "lucide-react";
-import { Appointment } from "@/services/appointments/types";
-import { StatusBadge } from "./status-badge";
+import { Appointment } from "@/appointments/types";
+import { StatusBadge } from "../../components/status-badge";
 import { formatDate } from "@/lib/dates";
-import { DaysToDate } from "./DaysToDate";
+import { DaysToDate } from "../../components/DaysToDate";
 
 interface AppointmentDrawerProps {
   appointment: Appointment | null;

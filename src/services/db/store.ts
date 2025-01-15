@@ -1,4 +1,4 @@
-import { Appointment } from "../appointments/types";
+import { Appointment } from "../../appointments/types";
 import { generateId } from "./manageIds";
 
 const appointmentsStorage: Appointment[] = [

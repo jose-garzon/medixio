@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { PhoneIcon } from "lucide-react";
-import { Appointment } from "@/services/appointments/types";
+import { Appointment } from "@/appointments/types";
 
 const appointments: Pick<
   Appointment,

@@ -14,7 +14,7 @@ import { SwitchField } from "@/components/forms/switch-field";
 import { useForm } from "react-hook-form";
 import { TimeField } from "@/components/forms/time-field";
 import { TextAreaField } from "@/components/forms/textarea.field";
-import { CreateAppointmentFormSchema } from "@/services/appointments/types";
+import { CreateAppointmentFormSchema } from "@/appointments/types";
 
 const onSubmit = (data: unknown) => {
   console.log(data);

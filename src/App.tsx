@@ -1,7 +1,7 @@
 import { Route, Switch, Router, Link } from "wouter";
 import { Dashboard } from "./pages/dashboard";
 import { CreateAppointment } from "./pages/create-appointment";
-import { AppointmentsTable } from "./components/appointment-table";
+import { AppointmentsTable } from "./pages/appointment-table";
 
 function App() {
   return (

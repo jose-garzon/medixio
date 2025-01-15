@@ -10,12 +10,12 @@ import { Button } from "@/components/ui/button";
 import { PhoneIcon as WhatsappIcon } from "lucide-react";
 import { AppointmentDrawer } from "./appointment-drawer";
 import { useState } from "react";
-import { Appointment } from "@/services/appointments/types";
-import { StatusBadge } from "./status-badge";
+import { Appointment } from "@/appointments/types";
+import { StatusBadge } from "../../components/status-badge";
 import { formatDate } from "@/lib/dates";
-import { NoAppointments } from "./no-appointments";
-import { DaysToDate } from "./DaysToDate";
+import { DaysToDate } from "../../components/DaysToDate";
 import { getAppointments } from "@/services/db/store";
+import { NoAppointments } from "./no-appointments";
 
 interface AppointmentListProps {
   type: "active" | "past";

@@ -1,9 +1,9 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import Stats from "@/components/stats";
-import DraftReminder from "@/components/draft-reminder";
-import AppointmentList from "@/components/appointment-list";
+import Stats from "@/appointments/components/stats";
+import DraftReminder from "@/appointments/components/draft-reminder";
+import AppointmentList from "@/appointments/components/appointment-list";
 import { Link } from "wouter";
 
 const dashboardData = {
