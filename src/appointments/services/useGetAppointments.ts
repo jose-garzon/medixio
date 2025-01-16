@@ -1,15 +1,15 @@
 import { getAppointments } from "@/services/db/store";
 import { useQuery } from "@tanstack/react-query";
-import { Appointment } from "../types";
+import { Appointment, GetAppointmentVariables } from "../types";
 
 interface UseGetAppointmentsParams {
-  type: "active" | "past";
+  filter: GetAppointmentVariables;
 }
 
 const useGetAppointments = (params: UseGetAppointmentsParams) => {
   return useQuery<Appointment[]>({
-    queryKey: ["appointments"],
-    queryFn: () => getAppointments(params.type),
+    queryKey: ["appointments", params],
+    queryFn: () => getAppointments(params.filter),
   });
 };
 

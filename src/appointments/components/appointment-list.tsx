@@ -12,7 +12,7 @@ import { AppointmentDrawer } from "./appointment-drawer";
 import { useState } from "react";
 import { Appointment } from "@/appointments/types";
 import { StatusBadge } from "../../components/status-badge";
-import { formatDate } from "@/lib/dates";
+import { convertTo12HourFormat, formatDate } from "@/lib/dates";
 import { DaysToDate } from "../../components/DaysToDate";
 import { NoAppointments } from "./no-appointments";
 import useGetAppointments from "../services/useGetAppointments";
@@ -34,7 +34,11 @@ export default function AppointmentList({ type }: AppointmentListProps) {
     setSelectedAppointment(null);
   };
 
-  const { data: appointments, isLoading } = useGetAppointments({ type });
+  const { data: appointments, isLoading } = useGetAppointments({
+    filter: {
+      status: type === "active" ? ["Active", "Draft"] : ["Outdated", "Done"],
+    },
+  });
 
   return (
     <>
@@ -61,7 +65,8 @@ export default function AppointmentList({ type }: AppointmentListProps) {
                       {formatDate(new Date(appointment.date))}
                     </p>
                     <p>
-                      <strong>Hora:</strong> {appointment.time}
+                      <strong>Hora:</strong>{" "}
+                      {convertTo12HourFormat(appointment.time)}
                     </p>
                   </div>
                   <DaysToDate appointmentDate={new Date(appointment.date)} />

@@ -10,20 +10,6 @@ const dashboardData = {
   totalAppointments: 15,
   upcomingAppointments: 5,
   missedAppointments: 2,
-  draftAppointments: [
-    {
-      id: "1",
-      doctorName: "Dr. Jane Smith",
-      specialty: "Neurologist",
-      date: null,
-    },
-    {
-      id: "2",
-      doctorName: "Dr. Mike Johnson",
-      specialty: "Oncologist",
-      date: "2023-07-15",
-    },
-  ],
 };
 
 export function Dashboard() {
@@ -44,11 +30,9 @@ export function Dashboard() {
               <TabsTrigger value="active">Activas</TabsTrigger>
               <TabsTrigger value="past">Pasadas</TabsTrigger>
             </TabsList>
-            <Link to="/citas">
-              <Button variant="ghost" size="sm">
-                Ver todas las citas
-              </Button>
-            </Link>
+            <Button asChild variant="ghost" size="sm">
+              <Link to="/citas">Ver todas las citas</Link>
+            </Button>
           </div>
           <TabsContent value="active">
             <AppointmentList type="active" />
@@ -65,7 +49,7 @@ export function Dashboard() {
             upcomingAppointments={dashboardData.upcomingAppointments}
             missedAppointments={dashboardData.missedAppointments}
           />
-          <DraftReminder draftAppointments={dashboardData.draftAppointments} />
+          <DraftReminder />
         </div>
       </div>
     </div>

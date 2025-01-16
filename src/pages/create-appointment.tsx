@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button";
-
 import {
   Card,
   CardContent,
@@ -17,6 +15,7 @@ import { TextAreaField } from "@/components/forms/textarea.field";
 import { CreateAppointmentFormSchema } from "@/appointments/types";
 import { useCreateNewAppointment } from "@/appointments/services/useCreateAppointment";
 import { useLocation } from "wouter";
+import { ButtonLoader } from "@/components/ButtonLoader";
 
 export function CreateAppointment() {
   const [, navigate] = useLocation();
@@ -116,9 +115,13 @@ export function CreateAppointment() {
                 label="Notas"
               />
 
-              <Button type="submit" className="w-full md:col-span-2">
+              <ButtonLoader
+                isLoading={createNewAppointment.isPending}
+                type="submit"
+                className="w-full md:col-span-2"
+              >
                 Crear cita
-              </Button>
+              </ButtonLoader>
             </form>
           </Form>
         </CardContent>

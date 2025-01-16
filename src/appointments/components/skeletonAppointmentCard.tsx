@@ -39,3 +39,17 @@ export function AppointmentListLoader({
     );
   return children;
 }
+
+export function DraftReminderLoader({
+  isLoading,
+  children,
+}: Omit<AppointmentListLoaderProps, "count">) {
+  if (isLoading)
+    return (
+      <div className="flex justify-between">
+        <Skeleton className="h-5 w-2/3" />
+        <Skeleton className="h-10 w-10 rounded-md" />
+      </div>
+    );
+  return children;
+}

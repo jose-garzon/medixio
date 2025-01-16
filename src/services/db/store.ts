@@ -1,6 +1,7 @@
 import {
   Appointment,
   CreateAppointmentVariables,
+  GetAppointmentVariables,
 } from "../../appointments/types";
 import { generateId } from "./manageIds";
 
@@ -10,7 +11,7 @@ const appointmentsStorage: Appointment[] = [
     doctorName: "Dr. John Doe",
     specialty: "Cardiologist",
     date: "2025-06-15",
-    time: "10:00 AM",
+    time: "10:00",
     status: "Active",
     address: "Clinica san diego",
     phoneNumber: "+57 3004486873",
@@ -21,29 +22,29 @@ const appointmentsStorage: Appointment[] = [
     doctorName: "Dr. Jane Smith",
     specialty: "Neurologist",
     date: "2025-02-20",
-    time: "2:00 PM",
+    time: "14:00",
     status: "Draft",
     address: "Clinica san diego",
     phoneNumber: "+57 3004486873",
     notes: "Llevar examenes",
   },
   {
-    id: "4",
+    id: "3",
     doctorName: "Dr. Saibi",
     specialty: "Reumatologo",
     date: "2025-01-20",
-    time: "2:00 PM",
+    time: "14:00",
     status: "Active",
     address: "Clinica Foscal",
     phoneNumber: "+57 3004486873",
     notes: "Llevar examenes",
   },
   {
-    id: "3",
+    id: "4",
     doctorName: "Dr. Mike Johnson",
     specialty: "Oncologist",
     date: "2025-05-10",
-    time: "11:30 AM",
+    time: "11:30",
     status: "Done",
     address: "Clinica san diego",
     phoneNumber: "+57 3004486873",
@@ -52,14 +53,14 @@ const appointmentsStorage: Appointment[] = [
 ];
 
 export async function getAppointments(
-  filter: "active" | "past"
+  filter: GetAppointmentVariables
 ): Promise<Appointment[]> {
   return new Promise((resolve) => {
     setTimeout(() => {
       const filteredAppointments = appointmentsStorage.filter((appointment) =>
-        filter === "active"
-          ? ["Active", "Draft"].includes(appointment.status)
-          : ["Done", "Outdated"].includes(appointment.status)
+        Array.isArray(filter.status)
+          ? filter.status.includes(appointment.status)
+          : appointment.status === filter.status
       );
       resolve(filteredAppointments);
     }, 1000);

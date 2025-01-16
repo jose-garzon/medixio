@@ -24,3 +24,7 @@ export interface CreateAppointmentFormSchema {
 }
 
 export type CreateAppointmentVariables = Omit<Appointment, "id">;
+
+export type GetAppointmentVariables = {
+  status: AppointmentStatus | AppointmentStatus[];
+};

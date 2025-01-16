@@ -23,9 +23,9 @@ export function NoAppointments({ className }: NoAppointmentsProps) {
         <p className="text-sm text-muted-foreground">
           Comienza creando tu primera cita médica.
         </p>
-        <Link to="/citas/nueva" className="block mx-auto w-autoS">
-          <Button>Crear cita</Button>
-        </Link>
+        <Button asChild className="block mx-auto w-auto">
+          <Link to="/citas/nueva">Crear cita</Link>
+        </Button>
       </CardContent>
     </Card>
   );

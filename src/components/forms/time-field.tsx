@@ -8,6 +8,7 @@ import {
 } from "../ui/form";
 import { Control, FieldValues, Path } from "react-hook-form";
 import { Combobox } from "../combobox";
+import { convertTo12Hour, convertTo24Hour } from "@/lib/dates";
 
 interface TimeFieldProps<T extends FieldValues> {
   control: Control<T>;
@@ -42,33 +43,6 @@ export const TimeField = <T extends FieldValues>({
     { value: "PM", label: "PM" },
   ];
 
-  const convertTo24Hour = (hour: string, minute: string, period: string) => {
-    let h = parseInt(hour);
-    if (period === "PM" && h !== 12) h += 12;
-    if (period === "AM" && h === 12) h = 0;
-    return `${h.toString().padStart(2, "0")}:${minute}`;
-  };
-
-  const convertTo12Hour = (value: string) => {
-    if (!value) return { hour: "12", minute: "00", period: "AM" };
-
-    const [h, m] = value?.split(":") || ["12", "00"];
-    let hour = parseInt(h);
-    let period = "AM";
-
-    if (hour >= 12) {
-      period = "PM";
-      if (hour > 12) hour -= 12;
-    }
-    if (hour === 0) hour = 12;
-
-    return {
-      hour: hour.toString().padStart(2, "0"),
-      minute: m,
-      period,
-    };
-  };
-
   return (
     <FormField
       control={control}
@@ -85,9 +59,9 @@ export const TimeField = <T extends FieldValues>({
                 id="hours"
                 icon={Clock}
                 value={field.value}
-                onChange={(value) =>
-                  field.onChange(convertTo24Hour(value, minute, period))
-                }
+                onChange={(value) => {
+                  field.onChange(convertTo24Hour(value, minute, period));
+                }}
                 options={hours}
                 emptyMessage="No se encontró la hora."
                 placeholder={hour}
@@ -113,9 +87,9 @@ export const TimeField = <T extends FieldValues>({
               <Combobox
                 id="periods"
                 value={field.value}
-                onChange={(value) =>
-                  field.onChange(convertTo24Hour(hour, minute, value))
-                }
+                onChange={(value) => {
+                  field.onChange(convertTo24Hour(hour, minute, value));
+                }}
                 options={periods}
                 placeholder={period}
                 searchable={false}
