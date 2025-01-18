@@ -8,7 +8,7 @@ Medixio is a web application designed to help people with complex illnesses effi
 
 - Create and edit medical appointments with detailed fields such as doctor's name, specialty, date and time, contact, and additional notes.
 
-- Manage appointment statuses: "draft," "active," "outdated," and "done."
+- Manage appointment statuses: "draft," "active," "lost," and "done."
 
 - Integration with WhatsApp for scheduling or confirming appointments.
 

@@ -7,20 +7,20 @@ interface StatusBadgeProps {
 
 export function StatusBadge({ status }: StatusBadgeProps) {
   const labelMap = {
-    Draft: "Por agendar",
-    Active: "Agendada",
-    Outdated: "Perdida",
-    Done: "Pasada",
+    draft: "Por agendar",
+    active: "Agendada",
+    lost: "Perdida",
+    done: "Pasada",
   };
   const variantMap: Record<AppointmentStatus, BadgeProps["variant"]> = {
-    Draft: "secondary",
-    Active: "default",
-    Outdated: "destructive",
-    Done: "outline",
+    draft: "secondary",
+    active: "default",
+    lost: "destructive",
+    done: "outline",
   };
   return (
-    <Badge variant={variantMap[status] ?? variantMap.Draft}>
-      {labelMap[status] ?? labelMap.Draft}
+    <Badge variant={variantMap[status] ?? variantMap.draft}>
+      {labelMap[status] ?? labelMap.draft}
     </Badge>
   );
 }

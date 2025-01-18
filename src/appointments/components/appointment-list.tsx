@@ -17,6 +17,7 @@ import { DaysToDate } from "../../components/DaysToDate";
 import { NoAppointments } from "./no-appointments";
 import useGetAppointments from "../services/useGetAppointments";
 import { AppointmentListLoader } from "./skeletonAppointmentCard";
+import { openWhatsAppConversation } from "@/notifications/services/whatsappMessage";
 
 interface AppointmentListProps {
   type: "active" | "past";
@@ -36,7 +37,7 @@ export default function AppointmentList({ type }: AppointmentListProps) {
 
   const { data: appointments, isLoading } = useGetAppointments({
     filter: {
-      status: type === "active" ? ["Active", "Draft"] : ["Outdated", "Done"],
+      status: type === "active" ? ["active", "draft"] : ["lost", "done"],
     },
   });
 
@@ -60,16 +61,22 @@ export default function AppointmentList({ type }: AppointmentListProps) {
                 </CardHeader>
                 <CardContent className="flex justify-between items-start">
                   <div>
-                    <p>
-                      <strong>Fecha: </strong>
-                      {formatDate(new Date(appointment.date))}
-                    </p>
-                    <p>
-                      <strong>Hora:</strong>{" "}
-                      {convertTo12HourFormat(appointment.time)}
-                    </p>
+                    {appointment.date && (
+                      <p>
+                        <strong>Fecha: </strong>
+                        {formatDate(new Date(appointment.date))}
+                      </p>
+                    )}
+                    {appointment.time && (
+                      <p>
+                        <strong>Hora:</strong>{" "}
+                        {convertTo12HourFormat(appointment.time)}
+                      </p>
+                    )}
                   </div>
-                  <DaysToDate appointmentDate={new Date(appointment.date)} />
+                  {appointment?.date && (
+                    <DaysToDate appointmentDate={new Date(appointment.date)} />
+                  )}
                 </CardContent>
                 <CardFooter className="flex lg:flex-col xl:flex-row justify-end gap-4">
                   <Button
@@ -79,7 +86,10 @@ export default function AppointmentList({ type }: AppointmentListProps) {
                   >
                     Detalles
                   </Button>
-                  <Button className="lg:w-full">
+                  <Button
+                    className="lg:w-full"
+                    onClick={() => openWhatsAppConversation(appointment)}
+                  >
                     <WhatsappIcon className="mr-2 h-4 w-4" /> WhatsApp
                   </Button>
                 </CardFooter>

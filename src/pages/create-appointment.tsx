@@ -12,10 +12,14 @@ import { SwitchField } from "@/components/forms/switch-field";
 import { useForm } from "react-hook-form";
 import { TimeField } from "@/components/forms/time-field";
 import { TextAreaField } from "@/components/forms/textarea.field";
-import { CreateAppointmentFormSchema } from "@/appointments/types";
+import {
+  CreateAppointmentFormSchema,
+  createAppointmentSchema,
+} from "@/appointments/types";
 import { useCreateNewAppointment } from "@/appointments/services/useCreateAppointment";
 import { useLocation } from "wouter";
 import { ButtonLoader } from "@/components/ButtonLoader";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export function CreateAppointment() {
   const [, navigate] = useLocation();
@@ -23,26 +27,28 @@ export function CreateAppointment() {
     defaultValues: {
       doctorName: "",
       specialty: "",
-      date: new Date(),
+      date: undefined,
       time: "",
       isActive: false,
-      addess: "",
+      address: "",
       phoneNumber: "",
       notes: "",
     },
+    resolver: zodResolver(createAppointmentSchema),
   });
   const createNewAppointment = useCreateNewAppointment();
 
   const onSubmit = (data: CreateAppointmentFormSchema) => {
+    console.log({ data });
     createNewAppointment.mutate(
       {
-        address: data.addess,
+        address: data.address,
         doctorName: data.doctorName,
         notes: data.notes,
         phoneNumber: data.phoneNumber,
         specialty: data.specialty,
         time: data.time,
-        date: data.date.toString(),
+        date: data.date && data.date.toString(),
         status: data.isActive ? "Active" : "Draft",
       },
       {
@@ -83,17 +89,11 @@ export function CreateAppointment() {
               />
               <InputField
                 control={form.control}
-                name="addess"
+                name="address"
                 label="Dirección"
                 placeholder="Dirección de la clínica"
               />
 
-              <DatePickerField
-                control={form.control}
-                name="date"
-                label="Fecha"
-              />
-              <TimeField control={form.control} label="Hora" name="time" />
               <InputField
                 control={form.control}
                 name="phoneNumber"
@@ -107,6 +107,14 @@ export function CreateAppointment() {
                 label="Cita agendada"
                 description="Selecciona si ya agendaste la cita."
               />
+
+              <DatePickerField
+                control={form.control}
+                name="date"
+                label="Fecha"
+                placeholder="Fecha de la cita"
+              />
+              <TimeField control={form.control} label="Hora" name="time" />
 
               <TextAreaField
                 className="md:col-span-2"

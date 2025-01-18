@@ -24,6 +24,7 @@ interface DatePickerFieldProps<T extends FieldValues> {
   name: Path<T>;
   label: string;
   description?: string;
+  placeholder?: string;
   mode?: CalendarProps["mode"];
   initialFocus?: CalendarProps["initialFocus"];
   disabled?: CalendarProps["disabled"];
@@ -35,6 +36,7 @@ export const DatePickerField = <T extends FieldValues>({
   name,
   label,
   description,
+  placeholder,
   mode = "single",
   initialFocus = true,
   disabled,
@@ -59,7 +61,7 @@ export const DatePickerField = <T extends FieldValues>({
                 {field.value ? (
                   formatDate(field.value)
                 ) : (
-                  <span>Pick a date</span>
+                  <span>{placeholder ?? "Pick a date"}</span>
                 )}
                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
               </Button>
