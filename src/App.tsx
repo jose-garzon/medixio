@@ -4,6 +4,8 @@ import { CreateAppointment } from "./pages/create-appointment";
 import { AppointmentsTable } from "./pages/appointment-table";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "./components/ui/toaster";
+import { NotificationPermissionBanner } from "./notifications/components/notification-permissions-alert";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +19,7 @@ function App() {
             <h1 className="text-2xl font-bold">Medixio</h1>
           </Link>
         </header>
+        <NotificationPermissionBanner />
         <main className="flex-grow container mx-auto px-4 py-8">
           <Router>
             <Switch>
@@ -27,6 +30,7 @@ function App() {
           </Router>
         </main>
       </div>
+      <Toaster />
     </QueryClientProvider>
   );
 }
