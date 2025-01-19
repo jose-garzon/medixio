@@ -49,7 +49,7 @@ export function CreateAppointment() {
         specialty: data.specialty,
         time: data.time,
         date: data.date && data.date.toString(),
-        status: data.isActive ? "Active" : "Draft",
+        status: data.isActive ? "active" : "draft",
       },
       {
         onSuccess: () => {

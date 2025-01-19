@@ -24,7 +24,7 @@ const appointments: Pick<
     doctorName: "Dr. John Doe",
     specialty: "Cardiologist",
     address: "123 Heart St, Cardio City, CC 12345",
-    status: "Active",
+    status: "active",
   },
   {
     id: "2",
@@ -33,7 +33,7 @@ const appointments: Pick<
     doctorName: "Dr. Jane Smith",
     specialty: "Neurologist",
     address: "456 Brain Ave, Neuro Town, NT 67890",
-    status: "Draft",
+    status: "draft",
   },
   {
     id: "3",
@@ -42,7 +42,7 @@ const appointments: Pick<
     doctorName: "Dr. Mike Johnson",
     specialty: "Oncologist",
     address: "789 Cell Rd, Onco Village, OV 13579",
-    status: "Done",
+    status: "done",
   },
   {
     id: "4",
@@ -51,7 +51,7 @@ const appointments: Pick<
     doctorName: "Dr. Sarah Lee",
     specialty: "Pediatrician",
     address: "101 Kid Lane, Pedia City, PC 24680",
-    status: "Active",
+    status: "active",
   },
   {
     id: "5",
@@ -60,7 +60,7 @@ const appointments: Pick<
     doctorName: "Dr. Robert Brown",
     specialty: "Dermatologist",
     address: "202 Skin Blvd, Derm Town, DT 35791",
-    status: "Active",
+    status: "active",
   },
 ];
 
@@ -90,7 +90,7 @@ export function AppointmentsTable() {
               <TableCell>
                 <Badge
                   variant={
-                    appointment.status === "Active" ? "default" : "secondary"
+                    appointment.status === "active" ? "default" : "secondary"
                   }
                 >
                   {appointment.status}

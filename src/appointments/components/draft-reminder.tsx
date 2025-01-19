@@ -8,7 +8,7 @@ import { DraftReminderLoader } from "./skeletonAppointmentCard";
 export default function DraftReminder() {
   const { data: appointments, isLoading } = useGetAppointments({
     filter: {
-      status: "Draft",
+      status: "draft",
     },
   });
   return (
