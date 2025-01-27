@@ -1,9 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { CalendarPlus } from "lucide-react";
 import { NoDraftAppointments } from "./no-appointments";
 import useGetAppointments from "../services/useGetAppointments";
 import { DraftReminderLoader } from "./skeletonAppointmentCard";
+import { QuickSchedule } from "./quick-schedule";
 
 export default function DraftReminder() {
   const { data: appointments, isLoading } = useGetAppointments({
@@ -34,9 +33,7 @@ export default function DraftReminder() {
                     </p>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Button size="icon">
-                      <CalendarPlus />
-                    </Button>
+                    <QuickSchedule id={appointment.id} variant="icon" />
                   </div>
                 </div>
               ))}

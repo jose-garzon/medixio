@@ -18,6 +18,7 @@ import { NoAppointments } from "./no-appointments";
 import useGetAppointments from "../services/useGetAppointments";
 import { AppointmentListLoader } from "./skeletonAppointmentCard";
 import { openWhatsAppConversation } from "@/notifications/services/whatsappMessage";
+import { QuickSchedule } from "./quick-schedule";
 
 interface AppointmentListProps {
   type: "active" | "past";
@@ -60,22 +61,24 @@ export default function AppointmentList({ type }: AppointmentListProps) {
                   </div>
                 </CardHeader>
                 <CardContent className="flex justify-between items-start">
-                  <div>
-                    {appointment.date && (
-                      <p>
-                        <strong>Fecha: </strong>
-                        {formatDate(new Date(appointment.date))}
-                      </p>
-                    )}
-                    {appointment.time && (
-                      <p>
-                        <strong>Hora:</strong>{" "}
-                        {convertTo12HourFormat(appointment.time)}
-                      </p>
-                    )}
-                  </div>
-                  {appointment?.date && (
-                    <DaysToDate appointmentDate={new Date(appointment.date)} />
+                  {appointment.date && appointment.time ? (
+                    <>
+                      <div>
+                        <p>
+                          <strong>Fecha: </strong>
+                          {formatDate(new Date(appointment.date))}
+                        </p>
+                        <p>
+                          <strong>Hora:</strong>
+                          {convertTo12HourFormat(appointment.time)}
+                        </p>
+                      </div>
+                      <DaysToDate
+                        appointmentDate={new Date(appointment.date)}
+                      />
+                    </>
+                  ) : (
+                    <QuickSchedule id={appointment.id} />
                   )}
                 </CardContent>
                 <CardFooter className="flex lg:flex-col xl:flex-row justify-end gap-4">

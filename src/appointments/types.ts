@@ -66,3 +66,8 @@ export const createAppointmentSchema = z
       }
     }
   });
+
+export const scheduleSchema = z.object({
+  date: z.date({ required_error: "Campo requerido" }),
+  time: z.string().nonempty("Campo requerido"),
+});
