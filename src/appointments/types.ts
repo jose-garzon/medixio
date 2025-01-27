@@ -30,6 +30,7 @@ export type GetAppointmentVariables = {
 };
 
 export type CreateAppointmentVariables = Omit<Appointment, "id">;
+export type UpdateAppointmentVariables = Partial<Appointment>;
 
 export const createAppointmentSchema = z
   .object({
@@ -66,6 +67,11 @@ export const createAppointmentSchema = z
       }
     }
   });
+
+export type QuickScheduleVariables = Pick<
+  CreateAppointmentVariables,
+  "date" | "time"
+>;
 
 export const scheduleSchema = z.object({
   date: z.date({ required_error: "Campo requerido" }),

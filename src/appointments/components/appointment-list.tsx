@@ -15,7 +15,10 @@ import { StatusBadge } from "../../components/status-badge";
 import { convertTo12HourFormat, formatDate } from "@/lib/dates";
 import { DaysToDate } from "../../components/DaysToDate";
 import { NoAppointments } from "./no-appointments";
-import useGetAppointments from "../services/useGetAppointments";
+import useGetAppointments, {
+  UseGetAppointmentsParams,
+  useOperateOverAppointments,
+} from "../services/useGetAppointments";
 import { AppointmentListLoader } from "./skeletonAppointmentCard";
 import { openWhatsAppConversation } from "@/notifications/services/whatsappMessage";
 import { QuickSchedule } from "./quick-schedule";
@@ -36,11 +39,18 @@ export default function AppointmentList({ type }: AppointmentListProps) {
     setSelectedAppointment(null);
   };
 
-  const { data: appointments, isLoading } = useGetAppointments({
+  const queryAppointmentsParams: UseGetAppointmentsParams = {
     filter: {
       status: type === "active" ? ["active", "draft"] : ["lost", "done"],
     },
-  });
+  };
+
+  const { data: appointments, isLoading } = useGetAppointments(
+    queryAppointmentsParams
+  );
+  const { refetchAppointments } = useOperateOverAppointments(
+    queryAppointmentsParams
+  );
 
   return (
     <>
@@ -69,7 +79,7 @@ export default function AppointmentList({ type }: AppointmentListProps) {
                           {formatDate(new Date(appointment.date))}
                         </p>
                         <p>
-                          <strong>Hora:</strong>
+                          <strong>Hora: </strong>
                           {convertTo12HourFormat(appointment.time)}
                         </p>
                       </div>
@@ -78,7 +88,12 @@ export default function AppointmentList({ type }: AppointmentListProps) {
                       />
                     </>
                   ) : (
-                    <QuickSchedule id={appointment.id} />
+                    <div className="flex justify-end w-full">
+                      <QuickSchedule
+                        id={appointment.id}
+                        onScheduleSuccess={refetchAppointments}
+                      />
+                    </div>
                   )}
                 </CardContent>
                 <CardFooter className="flex lg:flex-col xl:flex-row justify-end gap-4">

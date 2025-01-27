@@ -62,5 +62,18 @@ export function indexedDB(storeName: string) {
     });
   }
 
-  return { get, create };
+  async function update<T>(id: string, data: T): Promise<T> {
+    await open();
+    const foundEntry = await get<T>({ id });
+    const updatedData = { ...foundEntry[0], ...data };
+    return new Promise((resolve, reject) => {
+      const transaction = db!.transaction(storeName, "readwrite");
+      const store = transaction.objectStore(storeName);
+      const request = store.put(updatedData);
+      request.onsuccess = () => resolve(updatedData);
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  return { get, create, update };
 }

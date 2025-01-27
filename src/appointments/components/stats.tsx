@@ -35,7 +35,6 @@ export default function Stats() {
     appointments?.filter((appt) => appt.status === "lost").length ?? 0;
   const draft =
     appointments?.filter((appt) => appt.status === "draft").length ?? 0;
-  console.log({ appointments });
   return (
     <div className="grid grid-cols-2 gap-3">
       <StatCard
