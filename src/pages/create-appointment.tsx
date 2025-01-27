@@ -39,7 +39,6 @@ export function CreateAppointment() {
   const createNewAppointment = useCreateNewAppointment();
 
   const onSubmit = (data: CreateAppointmentFormSchema) => {
-    console.log({ data });
     createNewAppointment.mutate(
       {
         address: data.address,

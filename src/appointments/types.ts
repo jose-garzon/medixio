@@ -35,7 +35,13 @@ export const createAppointmentSchema = z
   .object({
     doctorName: z.string().nonempty("Campo requerido"),
     specialty: z.string().nonempty("Campo requerido"),
-    phoneNumber: z.string().nonempty("Campo requerido"),
+    phoneNumber: z
+      .string()
+      .nonempty("Campo requerido")
+      .regex(
+        /^\+\d{1,3}\d{7,}$/i,
+        "Número de teléfono inválido. Usa el formato internacional (+573002346892)"
+      ),
     address: z.string().nonempty("Campo requerido"),
     isActive: z.boolean(),
     date: z.date().optional(),
