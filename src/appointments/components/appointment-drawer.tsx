@@ -39,21 +39,23 @@ export function AppointmentDrawer({
             <StatusBadge status={appointment.status} />
           </DrawerHeader>
           <div className="p-4 pb-0 space-y-4">
-            <div className="flex  justify-between">
-              <div>
-                <div className="flex items-center space-x-2 text-lg">
-                  <CalendarIcon className="text-primary" />
-                  <span className="font-medium">
-                    {formatDate(appointmentDate)}
-                  </span>
+            {appointment.date && appointment.time && (
+              <div className="flex  justify-between">
+                <div>
+                  <div className="flex items-center space-x-2 text-lg">
+                    <CalendarIcon className="text-primary" />
+                    <span className="font-medium">
+                      {formatDate(appointmentDate)}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <ClockIcon className="text-primary" />
+                    <span>{appointment.time}</span>
+                  </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <ClockIcon className="text-primary" />
-                  <span>{appointment.time}</span>
-                </div>
+                <DaysToDate appointmentDate={appointmentDate} />
               </div>
-              <DaysToDate appointmentDate={appointmentDate} />
-            </div>
+            )}
             <div className="flex items-center space-x-2">
               <MapPin className="text-primary" />
               <span>{appointment.address}</span>

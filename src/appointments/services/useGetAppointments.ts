@@ -6,10 +6,10 @@ interface UseGetAppointmentsParams {
   filter: GetAppointmentVariables;
 }
 
-const useGetAppointments = (params: UseGetAppointmentsParams) => {
+const useGetAppointments = (params?: UseGetAppointmentsParams) => {
   return useQuery<Appointment[]>({
     queryKey: ["appointments", params],
-    queryFn: () => getAppointments(params.filter),
+    queryFn: () => getAppointments(params?.filter),
   });
 };
 

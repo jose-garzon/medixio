@@ -6,12 +6,6 @@ import DraftReminder from "@/appointments/components/draft-reminder";
 import AppointmentList from "@/appointments/components/appointment-list";
 import { Link } from "wouter";
 
-const dashboardData = {
-  totalAppointments: 15,
-  upcomingAppointments: 5,
-  missedAppointments: 2,
-};
-
 export function Dashboard() {
   return (
     <div className="flex flex-col lg:flex-row lg:space-x-6">
@@ -44,11 +38,7 @@ export function Dashboard() {
       </div>
       <div className="lg:w-80 mt-6 lg:mt-0">
         <div className="lg:sticky lg:top-4 space-y-6">
-          <Stats
-            totalAppointments={dashboardData.totalAppointments}
-            upcomingAppointments={dashboardData.upcomingAppointments}
-            missedAppointments={dashboardData.missedAppointments}
-          />
+          <Stats />
           <DraftReminder />
         </div>
       </div>

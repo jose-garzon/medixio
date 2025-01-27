@@ -5,12 +5,7 @@ import {
   AlertCircleIcon,
   TriangleAlertIcon,
 } from "lucide-react";
-
-interface StatsProps {
-  totalAppointments: number;
-  upcomingAppointments: number;
-  missedAppointments: number;
-}
+import useGetAppointments from "../services/useGetAppointments";
 
 interface StatCardProps {
   title: string;
@@ -32,29 +27,25 @@ function StatCard({ title, icon: Icon, value }: StatCardProps) {
   );
 }
 
-export default function Stats({
-  totalAppointments,
-  upcomingAppointments,
-  missedAppointments,
-}: StatsProps) {
+export default function Stats() {
+  const { data: appointments } = useGetAppointments();
+  const upcoming =
+    appointments?.filter((appt) => appt.status === "active").length ?? 0;
+  const lost =
+    appointments?.filter((appt) => appt.status === "lost").length ?? 0;
+  const draft =
+    appointments?.filter((appt) => appt.status === "draft").length ?? 0;
+  console.log({ appointments });
   return (
     <div className="grid grid-cols-2 gap-3">
-      <StatCard title="Total" icon={CalendarIcon} value={totalAppointments} />
       <StatCard
-        title="Siguientes"
-        icon={ClockIcon}
-        value={upcomingAppointments}
+        title="Total"
+        icon={CalendarIcon}
+        value={appointments?.length ?? 0}
       />
-      <StatCard
-        title="Perdidas"
-        icon={AlertCircleIcon}
-        value={missedAppointments}
-      />
-      <StatCard
-        title="por agendar"
-        icon={TriangleAlertIcon}
-        value={missedAppointments}
-      />
+      <StatCard title="Siguientes" icon={ClockIcon} value={upcoming} />
+      <StatCard title="Perdidas" icon={AlertCircleIcon} value={lost} />
+      <StatCard title="por agendar" icon={TriangleAlertIcon} value={draft} />
     </div>
   );
 }

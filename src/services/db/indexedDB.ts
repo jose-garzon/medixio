@@ -3,81 +3,8 @@ const DATABASE_NAME = "MedixioDB";
 const DATABASE_VERSION = 1;
 
 export interface IndexedDBQuery {
-  [key: string]: string | string[]; // Example: { doctorName: "John" }
+  [key: string]: string | string[];
 }
-
-// export class IndexedDB {
-//   private db: IDBDatabase | null = null;
-
-//   constructor(private storeName: string) {}
-
-//   private async open(): Promise<void> {
-//     if (this.db) return;
-//     this.db = await new Promise((resolve, reject) => {
-//       const request = indexedDB.open(DATABASE_NAME, DATABASE_VERSION);
-//       request.onupgradeneeded = () => {
-//         const db = request.result;
-//         if (!db.objectStoreNames.contains(this.storeName)) {
-//           db.createObjectStore(this.storeName, { keyPath: "id" });
-//         }
-//       };
-//       request.onsuccess = () => resolve(request.result);
-//       request.onerror = () => reject(request.error);
-//     });
-//   }
-
-//   async get<T>(query?: IndexedDBQuery): Promise<T[]> {
-//     await this.open();
-//     return new Promise((resolve, reject) => {
-//       const transaction = this.db!.transaction(this.storeName, "readonly");
-//       const store = transaction.objectStore(this.storeName);
-//       const request = store.getAll();
-//       request.onsuccess = () => {
-//         let results = request.result;
-//         if (query) {
-//           results = results.filter((item) =>
-//             Object.keys(query).every((key) => item[key] === query[key])
-//           );
-//         }
-//         resolve(results);
-//       };
-//       request.onerror = () => reject(request.error);
-//     });
-//   }
-
-//   async create<NewEntryData>(data: NewEntryData): Promise<void> {
-//     await this.open();
-//     return new Promise((resolve, reject) => {
-//       const transaction = this.db!.transaction(this.storeName, "readwrite");
-//       const store = transaction.objectStore(this.storeName);
-//       const request = store.add(data);
-//       request.onsuccess = () => resolve();
-//       request.onerror = () => reject(request.error);
-//     });
-//   }
-
-//   async update(data: any): Promise<void> {
-//     await this.open();
-//     return new Promise((resolve, reject) => {
-//       const transaction = this.db!.transaction(this.storeName, "readwrite");
-//       const store = transaction.objectStore(this.storeName);
-//       const request = store.put(data);
-//       request.onsuccess = () => resolve();
-//       request.onerror = () => reject(request.error);
-//     });
-//   }
-
-//   async delete(id: string | number): Promise<void> {
-//     await this.open();
-//     return new Promise((resolve, reject) => {
-//       const transaction = this.db!.transaction(this.storeName, "readwrite");
-//       const store = transaction.objectStore(this.storeName);
-//       const request = store.delete(id);
-//       request.onsuccess = () => resolve();
-//       request.onerror = () => reject(request.error);
-//     });
-//   }
-// }
 
 export function indexedDB(storeName: string) {
   let db: IDBDatabase | null = null;

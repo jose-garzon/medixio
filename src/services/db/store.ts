@@ -8,7 +8,7 @@ import { indexedDB } from "./indexedDB";
 const storage = indexedDB("appointments");
 
 export async function getAppointments(
-  filter: GetAppointmentVariables
+  filter?: GetAppointmentVariables
 ): Promise<Appointment[]> {
   return await storage.get<Appointment>(filter);
 }
