@@ -1,10 +1,11 @@
+import { indexedDB } from "@/services/db/indexedDB";
 import {
   Appointment,
+  AppointmentsAPI,
   CreateAppointmentVariables,
   GetAppointmentVariables,
   UpdateAppointmentVariables,
-} from "../../appointments/types";
-import { indexedDB } from "./indexedDB";
+} from "../types";
 
 const storage = indexedDB("appointments");
 
@@ -12,6 +13,11 @@ export async function getAppointments(
   filter?: GetAppointmentVariables
 ): Promise<Appointment[]> {
   return await storage.get<Appointment>(filter);
+}
+
+export async function getAppointment(id: string): Promise<Appointment> {
+  const results = await storage.get<Appointment>({ id });
+  return results[0];
 }
 
 export async function createAppointment(
@@ -27,15 +33,19 @@ export async function updateAppointment({
 }: {
   id: string;
   appointment: UpdateAppointmentVariables;
-}): Promise<Partial<Appointment>> {
+}): Promise<Appointment> {
   const updatedApointment = await storage.update(id, appointment);
-  return updatedApointment;
+  return updatedApointment as Appointment;
 }
 
-export async function deleteAppointment(id: string) {
+export async function deleteAppointment(id: string): Promise<string> {
   return storage.destroy(id);
 }
 
-export async function getAppointment(id: string) {
-  return storage.get({ id });
-}
+export const indexedDBRequests: AppointmentsAPI = {
+  getAppointments,
+  getAppointment,
+  createAppointment,
+  updateAppointment,
+  deleteAppointment,
+};

@@ -1,6 +1,6 @@
-import { getAppointments } from "@/services/db/store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Appointment, GetAppointmentVariables } from "../types";
+import { getAppointments } from "./indexedDBRepository";
 
 export interface UseGetAppointmentsParams {
   filter: GetAppointmentVariables;

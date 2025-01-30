@@ -77,3 +77,17 @@ export const scheduleSchema = z.object({
   date: z.date({ required_error: "Campo requerido" }),
   time: z.string().nonempty("Campo requerido"),
 });
+
+// SERVICE
+export interface AppointmentsAPI {
+  getAppointments: (filter?: GetAppointmentVariables) => Promise<Appointment[]>;
+  getAppointment: (id: string) => Promise<Appointment>;
+  createAppointment: (
+    appointment: CreateAppointmentVariables
+  ) => Promise<Appointment>;
+  updateAppointment: (params: {
+    id: string;
+    appointment: UpdateAppointmentVariables;
+  }) => Promise<Appointment>;
+  deleteAppointment: (id: string) => Promise<string>;
+}

@@ -75,13 +75,13 @@ export function indexedDB(storeName: string) {
     });
   }
 
-  async function destroy(id: string): Promise<void> {
+  async function destroy(id: string): Promise<string> {
     await open();
     return new Promise((resolve, reject) => {
       const transaction = db!.transaction(storeName, "readwrite");
       const store = transaction.objectStore(storeName);
       const request = store.delete(id);
-      request.onsuccess = () => resolve();
+      request.onsuccess = () => resolve("deleted successfully");
       request.onerror = () => reject(request.error);
     });
   }
