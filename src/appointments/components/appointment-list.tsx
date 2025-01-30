@@ -7,7 +7,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PhoneIcon as WhatsappIcon } from "lucide-react";
 import { AppointmentDrawer } from "./appointment-drawer";
 import { useState } from "react";
 import { Appointment } from "@/appointments/types";
@@ -20,8 +19,8 @@ import useGetAppointments, {
   useOperateOverAppointments,
 } from "../services/useGetAppointments";
 import { AppointmentListLoader } from "./skeletonAppointmentCard";
-import { openWhatsAppConversation } from "@/notifications/services/whatsappMessage";
 import { QuickSchedule } from "./quick-schedule";
+import { WhatsAppButton } from "@/notifications/components/whatsapp-button";
 
 interface AppointmentListProps {
   type: "active" | "past";
@@ -104,12 +103,7 @@ export default function AppointmentList({ type }: AppointmentListProps) {
                   >
                     Detalles
                   </Button>
-                  <Button
-                    className="lg:w-full"
-                    onClick={() => openWhatsAppConversation(appointment)}
-                  >
-                    <WhatsappIcon className="mr-2 h-4 w-4" /> WhatsApp
-                  </Button>
+                  <WhatsAppButton appointment={appointment} />
                 </CardFooter>
               </Card>
             ))
