@@ -75,5 +75,16 @@ export function indexedDB(storeName: string) {
     });
   }
 
-  return { get, create, update };
+  async function destroy(id: string): Promise<void> {
+    await open();
+    return new Promise((resolve, reject) => {
+      const transaction = db!.transaction(storeName, "readwrite");
+      const store = transaction.objectStore(storeName);
+      const request = store.delete(id);
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  return { get, create, update, destroy };
 }

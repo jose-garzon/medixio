@@ -7,11 +7,18 @@ import {
   DrawerFooter,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { CalendarIcon, ClockIcon, FileTextIcon, MapPin } from "lucide-react";
+import {
+  CalendarIcon,
+  ClockIcon,
+  FileTextIcon,
+  MapPin,
+  TrashIcon,
+} from "lucide-react";
 import { Appointment } from "@/appointments/types";
 import { StatusBadge } from "../../components/status-badge";
 import { formatDate } from "@/lib/dates";
 import { DaysToDate } from "../../components/DaysToDate";
+import { useDeleteAppointment } from "../services/useDeleteAppointment";
 
 interface AppointmentDrawerProps {
   appointment: Appointment | null;
@@ -22,6 +29,12 @@ export function AppointmentDrawer({
   appointment,
   onClose,
 }: AppointmentDrawerProps) {
+  const { mutate } = useDeleteAppointment();
+  function handleDelete() {
+    if (!appointment) return;
+    mutate(appointment.id, { onSuccess: onClose });
+  }
+
   if (!appointment) return null;
 
   const appointmentDate = new Date(appointment.date);
@@ -73,7 +86,19 @@ export function AppointmentDrawer({
             )}
           </div>
           <DrawerFooter>
-            <Button onClick={onClose}>Cerrar</Button>
+            <div className="flex gap-4 w-full">
+              <Button className="w-full" variant="secondary" onClick={onClose}>
+                Cerrar
+              </Button>
+              <Button
+                className="shrink-0"
+                size="icon"
+                variant="destructive"
+                onClick={handleDelete}
+              >
+                <TrashIcon />
+              </Button>
+            </div>
           </DrawerFooter>
         </div>
       </DrawerContent>

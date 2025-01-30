@@ -32,6 +32,10 @@ export async function updateAppointment({
   return updatedApointment;
 }
 
+export async function deleteAppointment(id: string) {
+  return storage.destroy(id);
+}
+
 export async function getAppointment(id: string) {
   return storage.get({ id });
 }
