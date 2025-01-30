@@ -5,6 +5,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { TableCell, TableRow } from "@/components/ui/table";
 
 interface AppointmentListLoaderProps {
   count?: number;
@@ -50,6 +51,28 @@ export function DraftReminderLoader({
         <Skeleton className="h-5 w-2/3" />
         <Skeleton className="h-10 w-10 rounded-md" />
       </div>
+    );
+  return children;
+}
+
+export function AppointmentTableLoader({
+  isLoading,
+  children,
+  count = 3,
+}: AppointmentListLoaderProps) {
+  if (isLoading)
+    return (
+      <>
+        {Array.from({ length: count }).map((_, index) => (
+          <TableRow key={index}>
+            {[...Array(7)].map((__, i) => (
+              <TableCell key={i}>
+                <Skeleton className="h-5 w-full" />
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </>
     );
   return children;
 }
