@@ -119,6 +119,7 @@ export default function AppointmentList({ type }: AppointmentListProps) {
       <AppointmentDrawer
         appointment={selectedAppointment}
         onClose={closeDrawer}
+        onDeleteSuccess={refetchAppointments}
       />
     </>
   );

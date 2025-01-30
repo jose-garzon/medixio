@@ -23,16 +23,23 @@ import { useDeleteAppointment } from "../services/useDeleteAppointment";
 interface AppointmentDrawerProps {
   appointment: Appointment | null;
   onClose: () => void;
+  onDeleteSuccess: () => void;
 }
 
 export function AppointmentDrawer({
   appointment,
   onClose,
+  onDeleteSuccess,
 }: AppointmentDrawerProps) {
   const { mutate } = useDeleteAppointment();
   function handleDelete() {
     if (!appointment) return;
-    mutate(appointment.id, { onSuccess: onClose });
+    mutate(appointment.id, {
+      onSuccess: () => {
+        onDeleteSuccess();
+        onClose();
+      },
+    });
   }
 
   if (!appointment) return null;
