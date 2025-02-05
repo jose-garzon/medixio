@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { deleteAppointment } from "./indexedDBRepository";
+import { deleteAppointment } from "./appointmentsRepository";
 
 export function useDeleteAppointment() {
   return useMutation({

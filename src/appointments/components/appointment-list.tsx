@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { AppointmentDrawer } from "./appointment-drawer";
 import { useState } from "react";
-import { Appointment } from "@/appointments/types";
+import { Appointment } from "@/appointments/domain";
 import { StatusBadge } from "../../components/status-badge";
 import { convertTo12HourFormat, formatDate } from "@/lib/dates";
 import { DaysToDate } from "../../components/DaysToDate";

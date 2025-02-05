@@ -1,4 +1,4 @@
-import { Appointment } from "@/appointments/types";
+import { Appointment } from "@/appointments/domain";
 
 export function openWhatsAppConversation(appointment: Appointment) {
   const formattedPhoneNumber = appointment.phoneNumber.replace(/[^0-9]/g, "");

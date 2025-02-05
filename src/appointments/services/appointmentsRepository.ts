@@ -5,7 +5,7 @@ import {
   CreateAppointmentVariables,
   GetAppointmentVariables,
   UpdateAppointmentVariables,
-} from "../types";
+} from "../domain";
 
 const storage = indexedDB("appointments");
 
@@ -42,7 +42,7 @@ export async function deleteAppointment(id: string): Promise<string> {
   return storage.destroy(id);
 }
 
-export const indexedDBRequests: AppointmentsAPI = {
+export const notificationRepository: AppointmentsAPI = {
   getAppointments,
   getAppointment,
   createAppointment,

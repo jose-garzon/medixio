@@ -15,7 +15,7 @@ import { TextAreaField } from "@/components/forms/textarea.field";
 import {
   CreateAppointmentFormSchema,
   createAppointmentSchema,
-} from "@/appointments/types";
+} from "@/appointments/domain";
 import { useCreateNewAppointment } from "@/appointments/services/useCreateAppointment";
 import { useLocation } from "wouter";
 import { ButtonLoader } from "@/components/ButtonLoader";

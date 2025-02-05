@@ -1,4 +1,4 @@
-import { AppointmentStatus } from "@/appointments/types";
+import { AppointmentStatus } from "@/appointments/domain";
 import { Badge, BadgeProps } from "./ui/badge";
 
 interface StatusBadgeProps {

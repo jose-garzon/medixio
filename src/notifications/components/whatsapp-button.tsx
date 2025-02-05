@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { openWhatsAppConversation } from "../services/whatsappMessage";
-import { Appointment } from "@/appointments/types";
+import { Appointment } from "@/appointments/domain";
 import { PhoneIcon as WhatsappIcon } from "lucide-react";
 
 interface WhatsAppButtonProps {

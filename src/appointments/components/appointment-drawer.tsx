@@ -14,7 +14,7 @@ import {
   MapPin,
   TrashIcon,
 } from "lucide-react";
-import { Appointment } from "@/appointments/types";
+import { Appointment } from "@/appointments/domain";
 import { StatusBadge } from "../../components/status-badge";
 import { formatDate } from "@/lib/dates";
 import { DaysToDate } from "../../components/DaysToDate";

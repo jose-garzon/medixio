@@ -3,7 +3,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { QuickScheduleVariables, scheduleSchema } from "../types";
+import { QuickScheduleVariables, scheduleSchema } from "../domain";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
 import { DatePickerField } from "@/components/forms/datepicker-field";

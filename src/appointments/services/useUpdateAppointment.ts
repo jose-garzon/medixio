@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { updateAppointment } from "./indexedDBRepository";
+import { updateAppointment } from "./appointmentsRepository";
 
 export function useUpdateAppointment() {
   return useMutation({
