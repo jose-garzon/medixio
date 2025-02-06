@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { Appointment } from "@/appointments/domain";
 import { StatusBadge } from "../../components/status-badge";
-import { formatDate } from "@/lib/dates";
+import { convertTo12HourFormat, formatDate } from "@/lib/dates";
 import { DaysToDate } from "../../components/DaysToDate";
 import { useDeleteAppointment } from "../services/useDeleteAppointment";
 
@@ -59,7 +59,7 @@ export function AppointmentDrawer({
             <StatusBadge status={appointment.status} />
           </DrawerHeader>
           <div className="p-4 pb-0 space-y-4">
-            {appointment.date && appointment.time && (
+            {appointment.date && (
               <div className="flex  justify-between">
                 <div>
                   <div className="flex items-center space-x-2 text-lg">
@@ -70,7 +70,9 @@ export function AppointmentDrawer({
                   </div>
                   <div className="flex items-center space-x-2">
                     <ClockIcon className="text-primary" />
-                    <span>{appointment.time}</span>
+                    <span>
+                      {convertTo12HourFormat(new Date(appointment.date))}
+                    </span>
                   </div>
                 </div>
                 <DaysToDate appointmentDate={appointmentDate} />

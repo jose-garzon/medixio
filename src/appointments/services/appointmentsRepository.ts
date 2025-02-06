@@ -42,7 +42,7 @@ export async function deleteAppointment(id: string): Promise<string> {
   return storage.destroy(id);
 }
 
-export const notificationRepository: AppointmentsAPI = {
+export const appointmentRepository: AppointmentsAPI = {
   getAppointments,
   getAppointment,
   createAppointment,

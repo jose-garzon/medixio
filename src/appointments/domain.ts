@@ -7,7 +7,6 @@ export interface Appointment {
   doctorName: string;
   specialty: string;
   date: string;
-  time: string;
   status: AppointmentStatus;
   address: string;
   phoneNumber: string;
@@ -29,7 +28,7 @@ export type GetAppointmentVariables = {
   status: AppointmentStatus | AppointmentStatus[];
 };
 
-export type CreateAppointmentVariables = Omit<Appointment, "id">;
+export type CreateAppointmentVariables = Omit<Appointment, "id" | "time">;
 export type UpdateAppointmentVariables = Partial<Appointment>;
 
 export const createAppointmentSchema = z
@@ -69,7 +68,7 @@ export const createAppointmentSchema = z
   });
 
 export type QuickScheduleVariables = Pick<
-  CreateAppointmentVariables,
+  CreateAppointmentFormSchema,
   "date" | "time"
 >;
 

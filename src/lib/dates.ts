@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, getHours, getMinutes, setHours, setMinutes } from "date-fns";
 import { es } from "date-fns/locale";
 
 export function formatDate(date: Date) {
@@ -32,9 +32,15 @@ export function convertTo12Hour(value: string) {
   };
 }
 
-export function convertTo12HourFormat(time24: string): string {
-  const [hour, minute] = time24.split(":").map(Number);
-  const period = hour >= 12 ? "PM" : "AM";
-  const hour12 = hour % 12 || 12;
-  return `${hour12}:${minute.toString().padStart(2, "0")} ${period}`;
+export function convertTo12HourFormat(date: Date): string {
+  const hours = getHours(date);
+  const minutes = getMinutes(date);
+  const period = hours >= 12 ? "PM" : "AM";
+  const hour12 = hours % 12 || 12;
+  return `${hour12}:${minutes.toString().padStart(2, "0")} ${period}`;
+}
+
+export function addTimeToDate(date: Date, time: string) {
+  const splittedTime = time.split(":").map(Number);
+  return setMinutes(setHours(date, splittedTime[0]), splittedTime[1]);
 }

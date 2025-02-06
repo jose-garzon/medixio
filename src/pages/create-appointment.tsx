@@ -20,6 +20,7 @@ import { useCreateNewAppointment } from "@/appointments/services/useCreateAppoin
 import { useLocation } from "wouter";
 import { ButtonLoader } from "@/components/ButtonLoader";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { addTimeToDate } from "@/lib/dates";
 
 export function CreateAppointment() {
   const [, navigate] = useLocation();
@@ -39,6 +40,7 @@ export function CreateAppointment() {
   const createNewAppointment = useCreateNewAppointment();
 
   const onSubmit = (data: CreateAppointmentFormSchema) => {
+    const updatedDate = data.time && addTimeToDate(data.date, data.time);
     createNewAppointment.mutate(
       {
         address: data.address,
@@ -46,8 +48,7 @@ export function CreateAppointment() {
         notes: data.notes,
         phoneNumber: data.phoneNumber,
         specialty: data.specialty,
-        time: data.time,
-        date: data.date && data.date.toString(),
+        date: data.date && updatedDate.toString(),
         status: data.isActive ? "active" : "draft",
       },
       {

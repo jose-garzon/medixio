@@ -70,7 +70,7 @@ export default function AppointmentList({ type }: AppointmentListProps) {
                   </div>
                 </CardHeader>
                 <CardContent className="flex justify-between items-start">
-                  {appointment.date && appointment.time ? (
+                  {appointment.date ? (
                     <>
                       <div>
                         <p>
@@ -79,7 +79,7 @@ export default function AppointmentList({ type }: AppointmentListProps) {
                         </p>
                         <p>
                           <strong>Hora: </strong>
-                          {convertTo12HourFormat(appointment.time)}
+                          {convertTo12HourFormat(new Date(appointment.date))}
                         </p>
                       </div>
                       <DaysToDate

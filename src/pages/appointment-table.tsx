@@ -15,6 +15,7 @@ import { AppointmentTableLoader } from "@/appointments/components/skeletonAppoin
 import { CalendarXIcon, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
+import { convertTo12HourFormat, formatDate } from "@/lib/dates";
 
 export function AppointmentsTable() {
   const { data: appointments, isLoading } = useGetAppointments();
@@ -29,7 +30,7 @@ export function AppointmentsTable() {
             <TableHead>Especialidad</TableHead>
             <TableHead>Direccion</TableHead>
             <TableHead>Estado</TableHead>
-            <TableHead>Agendar</TableHead>
+            <TableHead>Contactar</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -57,8 +58,10 @@ export function AppointmentsTable() {
             )}
             {appointments?.map((appointment) => (
               <TableRow key={appointment.id}>
-                <TableCell>{appointment.date}</TableCell>
-                <TableCell>{appointment.time}</TableCell>
+                <TableCell>{formatDate(new Date(appointment.date))}</TableCell>
+                <TableCell>
+                  {convertTo12HourFormat(new Date(appointment.date))}
+                </TableCell>
                 <TableCell>{appointment.doctorName}</TableCell>
                 <TableCell>{appointment.specialty}</TableCell>
                 <TableCell>{appointment.address}</TableCell>

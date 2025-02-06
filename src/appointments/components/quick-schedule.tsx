@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { useUpdateAppointment } from "../services/useUpdateAppointment";
 import { ButtonLoader } from "@/components/ButtonLoader";
+import { addTimeToDate } from "@/lib/dates";
 
 interface QuickScheduleProps {
   id: string;
@@ -35,12 +36,12 @@ export function QuickSchedule({
 
   const { mutate, isPending } = useUpdateAppointment();
   const handleConfirm = (data: QuickScheduleVariables) => {
+    const udpatedDate = addTimeToDate(data.date, data.time);
     mutate(
       {
         id,
         appointment: {
-          time: data.time,
-          date: data.date && data.date.toString(),
+          date: udpatedDate.toString(),
           status: "active",
         },
       },
