@@ -1,73 +1,74 @@
 # Medixio
 
-Medixio is a web application designed to help people with complex illnesses efficiently manage their medical appointments. It provides a user-friendly and accessible interface to organize appointments, store medical contact information, and track the status of each appointment.
+WhatsApp chatbot that helps people with complex illnesses manage medical appointments. Users interact with the bot over WhatsApp to create, list, and get reminders for their appointments.
 
-## Key Features
+## Stack
 
-- View active and past appointments.
+- **Python 3.12** managed by [uv](https://github.com/astral-sh/uv)
+- **neonize** — WhatsApp client (multi-device, QR pairing) built on top of `whatsmeow`
+- **FastAPI** — HTTP API for admin endpoints and health checks
+- **SQLModel** + **Alembic** — Postgres ORM and migrations
+- **psycopg 3** — Postgres driver
+- **ruff** — lint and format
 
-- Create and edit medical appointments with detailed fields such as doctor's name, specialty, date and time, contact, and additional notes.
+The app runs the FastAPI server and the WhatsApp event loop together in a single process via `asyncio`. The WhatsApp client persists its session to a local SQLite file (managed by neonize); application data (appointments, notifications) lives in Postgres.
 
-- Manage appointment statuses: "draft," "active," "lost," and "done."
+## Setup
 
-- Integration with WhatsApp for scheduling or confirming appointments.
+1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/).
+2. Install Python and dependencies:
 
-- Adaptable theme with light and dark modes.
+   ```bash
+   uv sync
+   ```
 
-## Technologies Used
+3. Copy env template and adjust:
 
-- React 18 for component creation.
+   ```bash
+   cp .env.example .env
+   ```
 
-- Wouter for routing.
+4. Start Postgres (use your own instance or docker), then run migrations:
 
-- Shadcn and TailwindCSS for a modern and accessible design.
+   ```bash
+   uv run alembic upgrade head
+   ```
 
-## Installation and Setup
+5. Run the app:
 
-Follow these steps to run the project locally:
+   ```bash
+   uv run medixio
+   ```
 
-1. Clone the repository
+   On first start neonize prints a QR code in the terminal. Scan it from WhatsApp (Settings → Linked Devices → Link a Device).
+
+## Common commands
+
+| Command | What it does |
+|---------|--------------|
+| `uv sync` | Install/update deps from `pyproject.toml` |
+| `uv run medixio` | Run the chatbot (FastAPI + WhatsApp worker) |
+| `uv run uvicorn medixio.main:app --reload` | API-only with hot reload |
+| `uv run alembic revision --autogenerate -m "msg"` | Create new migration |
+| `uv run alembic upgrade head` | Apply migrations |
+| `uv run ruff check .` | Lint |
+| `uv run ruff format .` | Format |
+| `uv run pytest` | Run tests |
+
+## Layout
 
 ```
-git clone https://github.com/your-username/medixio.git
-cd medixio
+src/medixio/
+├── main.py          # Entrypoint: starts FastAPI + WA worker
+├── config.py        # Settings (pydantic-settings, reads .env)
+├── db.py            # SQLModel engine and session helpers
+├── api/             # FastAPI routes
+├── whatsapp/        # neonize client + message handlers
+├── worker/          # Background scheduler (reminders)
+└── models/          # SQLModel tables
+alembic/             # Migrations
 ```
 
-2. Install dependencies
-   Make sure you have Node.js and bun installed. Then run:
+## Disclaimer
 
-```
-bun install
-```
-
-3. Start the development server
-
-```
-bun run dev
-```
-
-4. The project will be available at `http://localhost:3000`.
-
-Build for production (optional)
-To generate an optimized production build:
-
-```
-npm run build
-npm start
-```
-
-## Deployment
-
-You can access the deployed project at the following link:
-
-Medixio Deployment Link
-
-(Update this link with the project's URL once deployed)
-
-## Contribution
-
-If you want to contribute to the project, please open an issue or a pull request in the repository.
-
-## License
-
-This project is licensed under the MIT License. You can find more details in the `LICENSE` file in the repository.
+neonize is an **unofficial** WhatsApp client. Using it may violate WhatsApp's Terms of Service and can lead to account bans. For production use prefer the [WhatsApp Cloud API](https://developers.facebook.com/docs/whatsapp/cloud-api).
