@@ -1,0 +1,68 @@
+# Shared Colombian health-bureaucracy rules. See docs/design.md §5.
+# Entries with `source: product` are product decisions and always apply.
+# Any other entry is only used once the admin sets `reviewed_on` (YYYY-MM-DD).
+
+order.renewal_lead_days:
+  value: 15
+  source: product
+  reviewed_on: null
+
+order.dispense_every_months:
+  value: 1
+  source: "Chronic fórmulas up to 3 months, dispensed monthly (pharmacy chain guide, 2023 — practice, not a norm)"
+  reviewed_on: null
+
+dispensing.confirm_hour:
+  value: 19
+  source: product
+  reviewed_on: null
+
+dispensing.confirm_retries:
+  value: 3
+  source: product
+  reviewed_on: null
+
+dispensing.pending_delivery_hours:
+  value: 48
+  source: "Decreto-ley 019/2012 art. 131; Resolución 1604/2013"
+  reviewed_on: null
+
+dispensing.pending_delivery_hours_over_62:
+  value: 72
+  source: "Ley 1171/2007 (secondary source: Infobae 2025-09-13)"
+  reviewed_on: null
+
+dispensing.pending_followup_fallback_hours:
+  value: 48
+  source: product
+  reviewed_on: null
+
+authorization.expiry_lead_days:
+  value: 7
+  source: product
+  reviewed_on: null
+
+claims.pqrs_response_business_days:
+  value: 15
+  source: "Ley 1755/2015 art. 14 (Ley 1437/2011)"
+  reviewed_on: null
+
+claims.health_claim_response_hours:
+  value: 72
+  source: "Secondary source only (colombiatramita.co) — find primary norm"
+  reviewed_on: null
+
+claims.tutela_decision_business_days:
+  value: 10
+  source: "Decreto 2591/1991 art. 29 — not verified online"
+  reviewed_on: null
+
+appointment.remind_offsets_minutes:
+  value: [-1440, -120, 120]
+  source: product
+  reviewed_on: null
+
+profile.reminder_hour:
+  value: 8
+  source: product
+  reviewed_on: null

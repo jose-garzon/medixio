@@ -1,0 +1,91 @@
+[project]
+name = "medixio"
+version = "0.1.0"
+description = "WhatsApp assistant for Colombian patients' medical paperwork"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.20.1",
+    "fastapi>=0.162.0",
+    "neonize>=0.5.2",
+    "pydantic>=2.14.1",
+    "pydantic-ai-slim[anthropic]>=2.64.0",
+    "pydantic-settings>=2.16.2",
+    "python-dateutil>=3.0.0",
+    "pyyaml>=6.0.3",
+    "sqlmodel>=0.0.48",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[project.scripts]
+medixio = "medixio.main:run"
+
+[build-system]
+requires = ["uv_build>=0.13.4,<0.14"]
+build-backend = "uv_build"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "E",   # Errores de estilo (pycodestyle)
+    "W",   # Advertencias de estilo (pycodestyle)
+    "F",   # Errores de lógica (pyflakes)
+    "I",   # Ordenamiento de importaciones (isort)
+    "UP",  # Actualizaciones de sintaxis moderna de Python (pyupgrade)
+    "B",   # Previene bugs comunes (flake8-bugbear)
+    "SIM", # Simplificación de código (flake8-simplify)
+    "PT",  # Buenas prácticas para Pytest (flake8-pytest-style)
+]
+ignore = []
+
+[tool.ruff.lint.per-file-ignores]
+"migrations/*" = ["E402"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+lines-after-imports = 2
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true  # Activa el modo estricto (altamente recomendado en proyectos modernos)
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+# Evita que librerías externas sin tipos rompan tu tipado
+[[tool.mypy.overrides]]
+module = [
+    "neonize.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra -q --cov=medixio --cov-report=term-missing" # Auto-ejecuta cobertura en la carpeta 'src'
+testpaths = [
+    "tests",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning", # Filtra warnings irrelevantes de terceros
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4.1",
+    "pre-commit>=4.7.0",
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.1",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.17.3",
+    "rust-just>=1.59.0",
+    "types-python-dateutil>=2.9.0.20261029",
+    "types-pyyaml>=6.0.12.20261030",
+]

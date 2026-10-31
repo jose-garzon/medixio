@@ -1,0 +1,38 @@
+services:
+  bot:
+    build: .
+    image: ghcr.io/jose-garzon/medixio:latest
+    env_file: .env
+    environment:
+      API_HOST: 0.0.0.0
+      DATABASE_URL: sqlite:////app/data/medixio.db
+      WA_SESSION_DB: /app/data/wa_session/session.sqlite3
+      OBSERVABILITY_DB: /app/data/observability.db
+    volumes:
+      - ./data:/app/data
+    ports:
+      - "127.0.0.1:8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --label-enable --interval 300 --cleanup
+    restart: unless-stopped
+
+  backup:
+    image: keinos/sqlite3
+    user: "0:0"   # same owner as the bot container, so it can write -shm and backups/
+    volumes:
+      - ./data:/data   # rw: WAL mode needs the -shm file writable
+      - ./backups:/backups
+    entrypoint: ["/bin/sh", "-c", "while true; do sqlite3 /data/medixio.db \".backup /backups/medixio-$$(date +%F).db\"; find /backups -name 'medixio-*.db' -mtime +14 -delete; sleep 86400; done"]
+    restart: unless-stopped
