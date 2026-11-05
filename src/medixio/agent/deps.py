@@ -1,4 +1,5 @@
-from dataclasses import dataclass
+import threading
+from dataclasses import dataclass, field
 from datetime import datetime
 
 from sqlmodel import Session
@@ -12,3 +13,5 @@ class RunDeps:
     patient: Patient
     now: datetime  # UTC
     delete_requested: bool = False
+    # The model may call tools in parallel (worker threads); they share one session.
+    lock: threading.Lock = field(default_factory=threading.Lock)

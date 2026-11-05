@@ -68,16 +68,17 @@ def _done(ctx: RunContext[RunDeps], text: str) -> str:
 
 
 def _guard(fn: Any) -> Any:
-    """Turn domain lookup/validation errors into retries the model can fix."""
+    """Serialize parallel tool calls on the shared session; errors become retries."""
     import functools
 
     @functools.wraps(fn)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
-        try:
-            return fn(*args, **kwargs)
-        except (LookupError, ValueError) as exc:
-            args[0].deps.session.rollback()
-            raise ModelRetry(str(exc)) from exc
+        with args[0].deps.lock:
+            try:
+                return fn(*args, **kwargs)
+            except (LookupError, ValueError) as exc:
+                args[0].deps.session.rollback()
+                raise ModelRetry(str(exc)) from exc
 
     return wrapper
 
@@ -197,6 +198,7 @@ def set_appointment_status(
 
 
 @agent.tool
+@_guard
 def list_past_appointments(ctx: RunContext[RunDeps]) -> str:
     """Historial de citas, incluidas las pasadas."""
     items = appointments.list_for(ctx.deps.session, ctx.deps.patient.id, upcoming=False)
@@ -445,6 +447,7 @@ def cancel_reminder(ctx: RunContext[RunDeps], reminder_id: str) -> str:
 
 
 @agent.tool
+@_guard
 def list_upcoming_reminders(ctx: RunContext[RunDeps]) -> str:
     """Todos los avisos programados (citas, fórmulas, entregas, personales)."""
     rows = []
@@ -460,6 +463,7 @@ def list_upcoming_reminders(ctx: RunContext[RunDeps]) -> str:
 
 
 @agent.tool
+@_guard
 def request_data_deletion(ctx: RunContext[RunDeps], confirmation_phrase: str) -> str:
     """Borra TODOS los datos del paciente. Solo si escribió la frase exacta."""
     if confirmation_phrase.strip().upper() != DELETE_PHRASE:
