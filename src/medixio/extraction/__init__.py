@@ -4,7 +4,7 @@ from datetime import date, datetime
 from typing import Literal
 
 from pydantic import BaseModel, Field
-from pydantic_ai import Agent, BinaryContent
+from pydantic_ai import Agent, BinaryContent, ToolOutput
 
 
 class ExtractedItem(BaseModel):
@@ -36,13 +36,16 @@ class DocumentExtraction(BaseModel):
 
 
 extractor = Agent(
-    output_type=DocumentExtraction,
+    # strict=False: Anthropic rejects this schema as "too complex" in strict mode
+    output_type=ToolOutput(DocumentExtraction, strict=False),
     instructions=(
         "Extrae datos de una foto de un documento médico-administrativo colombiano: "
         "fórmula/orden médica, autorización de EPS o soporte de cita. "
         "Copia los textos literalmente; no interpretes dosis. "
         "Si un dato no se lee con claridad, déjalo vacío y añádelo a "
         "unreadable_fields. "
+        "authorization_number es solo el número de autorización de la EPS; no uses "
+        "ahí números de comprobante, consecutivo, cita, factura ni radicado. "
         "Fechas en formato colombiano día/mes/año."
     ),
 )
