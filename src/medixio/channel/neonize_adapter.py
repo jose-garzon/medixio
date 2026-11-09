@@ -11,6 +11,7 @@ from neonize.aioze.events import (
     StreamReplacedEv,
     TemporaryBanEv,
 )
+from neonize.proto.waE2E.WAWebProtobufsE2E_pb2 import Message
 from neonize.utils.jid import Jid2String, build_jid
 
 from medixio.channel.base import Inbound, InboundHandler
@@ -23,6 +24,33 @@ log = logging.getLogger(__name__)
 def _jid_from_string(jid: str):  # type: ignore[no-untyped-def]
     user, _, server = jid.partition("@")
     return build_jid(user.split(":", 1)[0], server or "s.whatsapp.net")
+
+
+_WRAPPERS = (
+    "ephemeralMessage",
+    "viewOnceMessage",
+    "viewOnceMessageV2",
+    "viewOnceMessageV2Extension",
+    "documentWithCaptionMessage",
+)
+_DOCUMENT_TYPES = ("image/jpeg", "image/png", "image/webp", "image/gif")
+
+
+def _unwrap(msg: Message) -> Message:
+    """Disappearing, view-once and captioned-document messages nest the real one."""
+    for _ in range(3):
+        for name in _WRAPPERS:
+            if msg.HasField(name):
+                msg = getattr(msg, name).message
+                break
+        else:
+            return msg
+    return msg
+
+
+def _readable_document(mimetype: str) -> bool:
+    """Images sent as files ("documento") are as readable as photos."""
+    return mimetype.split(";")[0].strip() in _DOCUMENT_TYPES
 
 
 class NeonizeChannel:
@@ -69,16 +97,25 @@ class NeonizeChannel:
             source = event.Info.MessageSource
             if source.IsFromMe or source.IsGroup:
                 return
-            msg = event.Message
+            msg = _unwrap(event.Message)
             text = msg.conversation or msg.extendedTextMessage.text
             image: bytes | None = None
             media_type: str | None = None
             if msg.HasField("imageMessage"):
                 text = msg.imageMessage.caption or text
                 media_type = msg.imageMessage.mimetype or "image/jpeg"
-                data = await client.download_any(msg)  # bytes, no path => not written
+            elif msg.HasField("documentMessage") and _readable_document(
+                msg.documentMessage.mimetype
+            ):
+                text = msg.documentMessage.caption or text
+                media_type = msg.documentMessage.mimetype.split(";")[0]
+            if media_type is not None:
+                # bytes, no path => not written to disk
+                data = await client.download_any(msg)
                 image = data if isinstance(data, bytes) else None
             if not text and image is None:
+                kinds = [f.name for f, _ in msg.ListFields()]
+                log.info("ignored inbound message kinds=%s", kinds)
                 return
             jid = Jid2String(source.Chat)
             log.info(
