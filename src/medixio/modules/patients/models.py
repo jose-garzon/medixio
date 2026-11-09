@@ -17,6 +17,7 @@ class Patient(TableBase, table=True):
 class PatientProfile(TableBase, table=True):
     patient_id: str = Field(foreign_key="patient.id", unique=True, ondelete="CASCADE")
     eps: str | None = None
+    prepaid_plan: str | None = None  # medicina prepagada, e.g. Colmédica
     regimen: str | None = None  # contributivo | subsidiado | especial
     city: str | None = None
     default_pharmacy: str | None = None

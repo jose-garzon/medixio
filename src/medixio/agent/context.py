@@ -17,7 +17,8 @@ def snapshot(session: Session, patient: Patient) -> str:
     p = get_profile(session, patient.id)
     lines = [
         "## Perfil",
-        f"nombre={patient.name or '?'} eps={p.eps or '?'} regimen={p.regimen or '?'} "
+        f"nombre={patient.name or '?'} eps={p.eps or '?'} "
+        f"prepagada={p.prepaid_plan or 'ninguna/?'} regimen={p.regimen or '?'} "
         f"ciudad={p.city or '?'} farmacia={p.default_pharmacy or '?'} "
         f"entrega={p.delivery_mode or '?'} hora_recordatorios={p.reminder_hour or 8} "
         f"año_nacimiento={p.birth_year or '?'}",

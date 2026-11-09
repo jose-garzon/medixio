@@ -41,6 +41,7 @@ def get_profile(session: Session, patient_id: str) -> PatientProfile:
 
 PROFILE_FIELDS = {
     "eps",
+    "prepaid_plan",
     "regimen",
     "city",
     "default_pharmacy",
