@@ -10,6 +10,8 @@ from sqlmodel import Session
 from medixio.channel.base import Channel
 from medixio.config import get_settings
 from medixio.db import engine
+from medixio.modules.conversations import service as conversations
+from medixio.modules.conversations.models import Role
 from medixio.modules.dispensing import service as dispensing
 from medixio.modules.patients.models import Patient
 from medixio.modules.reminders import service as reminders
@@ -45,6 +47,10 @@ async def dispatch_due(session: Session, channel: Channel, now: datetime) -> int
         except Exception:
             log.exception("dispatch failed patient=%s", patient_id)
             continue
+        # keep it in history so the agent knows what it told the user
+        conversations.add(
+            session, patient_id, Role.ASSISTANT, f"[aviso automático enviado] {text}"
+        )
         for reminder, occurrence in items:
             reminder.last_sent_at = occurrence
             session.add(reminder)

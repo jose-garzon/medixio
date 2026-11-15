@@ -96,7 +96,7 @@ async def test_image_order_saved_only_after_confirmation(
     (order,) = session.exec(select(MedicalOrder)).all()
     assert order.extracted_from_image
     stored = [m.content for m in session.exec(select(Message)).all()]
-    assert any("[imagen recibida: order" in c for c in stored)
+    assert any("[documento recibido: order" in c for c in stored)
 
 
 @pytest.mark.asyncio

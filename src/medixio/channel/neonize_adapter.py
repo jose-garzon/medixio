@@ -33,7 +33,13 @@ _WRAPPERS = (
     "viewOnceMessageV2Extension",
     "documentWithCaptionMessage",
 )
-_DOCUMENT_TYPES = ("image/jpeg", "image/png", "image/webp", "image/gif")
+_DOCUMENT_TYPES = (
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/gif",
+    "application/pdf",
+)
 
 
 def _unwrap(msg: Message) -> Message:
@@ -49,7 +55,7 @@ def _unwrap(msg: Message) -> Message:
 
 
 def _readable_document(mimetype: str) -> bool:
-    """Images sent as files ("documento") are as readable as photos."""
+    """Images and PDFs sent as files ("documento") are readable."""
     return mimetype.split(";")[0].strip() in _DOCUMENT_TYPES
 
 

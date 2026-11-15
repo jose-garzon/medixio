@@ -1,4 +1,4 @@
-"""Image -> structured data, in memory only. Images are never stored (design §6.1)."""
+"""Image/PDF -> structured data, in memory only. Never stored (design §6.1)."""
 
 from datetime import date, datetime
 from typing import Literal
@@ -39,8 +39,8 @@ extractor = Agent(
     # strict=False: Anthropic rejects this schema as "too complex" in strict mode
     output_type=ToolOutput(DocumentExtraction, strict=False),
     instructions=(
-        "Extrae datos de una foto de un documento médico-administrativo colombiano: "
-        "fórmula/orden médica, autorización de EPS o soporte de cita. "
+        "Extrae datos de una foto o PDF de un documento médico-administrativo "
+        "colombiano: fórmula/orden médica, autorización de EPS o soporte de cita. "
         "Copia los textos literalmente; no interpretes dosis. "
         "Si un dato no se lee con claridad, déjalo vacío y añádelo a "
         "unreadable_fields. "
