@@ -2,6 +2,7 @@
 
 import asyncio
 import logging
+import re
 
 from pydantic_ai.exceptions import (
     ModelConnectionError,
@@ -17,6 +18,7 @@ from pydantic_ai.messages import (
     ModelResponse,
     TextPart,
     ToolCallPart,
+    ToolReturnPart,
     UserPromptPart,
 )
 from sqlmodel import Session, select
@@ -34,7 +36,7 @@ from medixio.modules.conversations.models import Message, Role
 from medixio.modules.patients import service as patients
 from medixio.modules.patients.models import Patient
 from medixio.observability import obs
-from medixio.shared.time import utcnow
+from medixio.shared.time import fmt_local, to_local, utcnow
 
 
 log = logging.getLogger(__name__)
@@ -67,27 +69,53 @@ DELETED_TEXT = (
     "Listo, borré todos tus datos. Si vuelves a escribir empezamos de cero. 👋"
 )
 
+READ_ONLY_TOOLS = {"list_past_appointments", "list_upcoming_reminders", "get_guide"}
+
 _locks: dict[str, asyncio.Lock] = {}
 
 
+ACTIONS_PREFIX = "[acciones guardadas:"
+_ACTIONS_RE = re.compile(r"^\[acciones guardadas:.*$", re.MULTILINE)
+
+
+def _stamp(m: Message) -> str:
+    local = to_local(m.created_at)
+    return f"[{local:%A} {fmt_local(m.created_at)}]"
+
+
 def _history(messages: list[Message]) -> list[ModelMessage]:
+    """Each turn carries its local timestamp so the model can tell days apart."""
     result: list[ModelMessage] = []
     for m in messages:
+        content = f"{_stamp(m)} {m.content}"
         if m.role == Role.USER:
-            result.append(ModelRequest(parts=[UserPromptPart(content=m.content)]))
+            result.append(ModelRequest(parts=[UserPromptPart(content=content)]))
         else:
-            result.append(ModelResponse(parts=[TextPart(content=m.content)]))
+            result.append(ModelResponse(parts=[TextPart(content=content)]))
     return result
+
+
+def _actions_note(results: list[str]) -> str:
+    """Stored with the reply (never sent) so later turns know what was saved."""
+    return f"\n{ACTIONS_PREFIX} {' | '.join(results)}]" if results else ""
+
+
+def _clean_reply(text: str) -> str:
+    text = _ACTIONS_RE.sub("", text)
+    return re.sub(r"^\[\w+ \d{4}-\d{2}-\d{2} \d{2}:\d{2}\]\s*", "", text).strip()
 
 
 def _describe_extraction(x: DocumentExtraction) -> str:
     data = x.model_dump(exclude_none=True, exclude_defaults=True, mode="json")
     return (
-        f"[imagen recibida: {x.kind}, confianza {x.confidence}] Datos extraídos: {data}"
+        f"[documento recibido: {x.kind}, confianza {x.confidence}] "
+        f"Datos extraídos: {data}"
     )
 
 
-async def _run_agent(prompt: str, deps: RunDeps, history: list[ModelMessage]) -> str:
+async def _run_agent(
+    prompt: str, deps: RunDeps, history: list[ModelMessage]
+) -> tuple[str, list[str]]:
     delays = [0.5, 1.0, 2.0]
     for attempt in range(len(delays) + 1):
         try:
@@ -103,9 +131,16 @@ async def _run_agent(prompt: str, deps: RunDeps, history: list[ModelMessage]) ->
                     if isinstance(p, ToolCallPart)
                 ]
                 labels["tools"] = tools
+                saved = [
+                    f"{p.tool_name}: {p.model_response_str()}"
+                    for m in result.new_messages()
+                    for p in m.parts
+                    if isinstance(p, ToolReturnPart)
+                    and p.tool_name not in READ_ONLY_TOOLS
+                ]
             obs().metric("agent.tokens_in", usage.input_tokens or 0)
             obs().metric("agent.tokens_out", usage.output_tokens or 0)
-            return result.output
+            return _clean_reply(result.output), saved
         except TRANSIENT:
             deps.session.rollback()
             if attempt == len(delays):
@@ -159,7 +194,7 @@ async def _handle(session: Session, inbound: Inbound) -> str | None:
                 labels["confidence"] = extraction.confidence
         except Exception:
             log.exception("image extraction failed")
-            return "No pude leer la imagen 😕. ¿Me la envías otra vez, más nítida?"
+            return "No pude leer el documento 😕. ¿Me lo envías otra vez, más nítido?"
         finally:
             inbound.image = None
         prompt = f"{_describe_extraction(extraction)}\n{inbound.text}".strip()
@@ -169,7 +204,7 @@ async def _handle(session: Session, inbound: Inbound) -> str | None:
     )
     deps = RunDeps(session=session, patient=patient, now=utcnow())
     try:
-        reply = await _run_agent(prompt, deps, history)
+        reply, saved = await _run_agent(prompt, deps, history)
     except Exception:
         log.exception("agent failed patient=%s", patient.id)
         return ERROR_TEXT
@@ -180,6 +215,6 @@ async def _handle(session: Session, inbound: Inbound) -> str | None:
         return DELETED_TEXT
 
     conversations.add(session, patient.id, Role.USER, prompt, has_image=has_image)
-    conversations.add(session, patient.id, Role.ASSISTANT, reply)
+    conversations.add(session, patient.id, Role.ASSISTANT, reply + _actions_note(saved))
     session.commit()
     return reply
