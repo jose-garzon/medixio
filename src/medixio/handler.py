@@ -200,7 +200,12 @@ async def _handle(session: Session, inbound: Inbound) -> str | None:
         prompt = f"{_describe_extraction(extraction)}\n{inbound.text}".strip()
 
     history = _history(
-        conversations.last(session, patient.id, get_settings().history_size)
+        conversations.last(
+            session,
+            patient.id,
+            get_settings().history_size,
+            since=conversations.session_start(),
+        )
     )
     deps = RunDeps(session=session, patient=patient, now=utcnow())
     try:
