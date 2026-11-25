@@ -65,10 +65,16 @@ agent = Agent(deps_type=RunDeps, instructions=INSTRUCTIONS, retries=2)
 
 @agent.instructions
 def _context(ctx: RunContext[RunDeps]) -> str:
-    now = to_local(ctx.deps.now)
-    return f"Ahora: {now:%A %Y-%m-%d %H:%M} (hora Colombia).\n\n" + snapshot(
-        ctx.deps.session, ctx.deps.patient
-    )
+    if ctx.deps.context_snapshot is None:
+        now = to_local(ctx.deps.now)
+        ctx.deps.context_snapshot = (
+            f"Ahora: {now:%A %Y-%m-%d %H:%M} (hora Colombia).\n\n"
+            "Contexto tomado al recibir el mensaje actual; los cambios que hagas con "
+            "herramientas en este turno no aparecen aquí (el resultado de la "
+            "herramienta lo confirma).\n\n"
+            + snapshot(ctx.deps.session, ctx.deps.patient)
+        )
+    return ctx.deps.context_snapshot
 
 
 def _done(ctx: RunContext[RunDeps], text: str) -> str:
